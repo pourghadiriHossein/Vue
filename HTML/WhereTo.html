@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!--               JavaScript In Head                   -->
+    <script>
+        function JavaScriptInHead() {
+          document.getElementById("JavaScript In Head").innerHTML =
+           "Paragraph changed: JavaScript In Head!!!";
+        }
+    </script>
+</head>
+<body>
+    <!-- ******************************************** -->
+    <!--               JavaScript In Body             -->
+    <h2>JavaScript in Body</h2>
+
+    <p id="JavaScript In Body"></p>
+
+    <script>
+        document.getElementById("JavaScript In Body").innerHTML =
+         "My First JavaScript: JavaScript In Body!!!";
+    </script>
+    <br><br><hr><br>
+    <!-- ****************************************** -->
+    <!--            JavaScript In Head              -->
+    <h2>Demo JavaScript in Head</h2>
+
+    <p id="JavaScript In Head">A Paragraph.</p>
+
+    <button type="button" onclick="JavaScriptInHead()">Try it</button>
+    <br><br><hr><br>
+    <!-- ******************************************* -->
+    <!--             External JavaScript             -->
+    <h2>Demo External JavaScript</h2>
+
+    <p id="External JavaScript">A Paragraph.</p>
+
+    <button type="button" onclick="ExternalJavaScript()">Try it</button>
+
+    <p>This example links to "WhereTo.js".</p>
+    <p>(myFunction is stored in "../JS/WhereTo.js")</p>
+
+    <script src="../JS/WhereTo.js"></script>
+</body>
+</html>

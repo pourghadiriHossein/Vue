@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <h2>My First Web Page</h2>
+    <p>My First Paragraph.</p>
+    <button type="button" onclick="outputWithInnerHTML()">Output</button>
+    <p id="outputWithInnerHTML"></p>
+    <!-- ********************************** -->
+    <br><br><hr><br>
+    h2>My First Web Page</h2>
+    <p>My first paragraph.</p>
+
+    <p>Never call document.write after the document has finished loading.
+    It will overwrite the whole document.</p>
+    <button type="button" onclick="outputWithDocumentWrite()">Output</button>
+    <!-- *************************************** -->
+    <br><br><hr><br>
+    <h2>My First Web Page</h2>
+    <p>My first paragraph.</p>
+
+    <button type="button" onclick="document.write(6 + 6)">Try it</button>
+    <!-- ********************************************* -->
+    <br><br><hr><br>
+    <h2>My First Web Page</h2>
+    <p>My first paragraph.</p>
+    <button type="button" onclick="outputWithWindowAlert()">Try it</button>
+    <!-- ****************************************** -->
+    <br><br><hr><br>
+    <h2>My First Web Page</h2>
+    <p>My first paragraph.</p>
+    <button type="button" onclick="outputWithAlert()">Try it</button>
+    <!-- ********************************************* -->
+    <br><br><hr><br>
+    <h2>Activate Debugging</h2>
+
+    <p>F12 on your keyboard will activate debugging.</p>
+    <p>Then select "Console" in the debugger menu.</p>
+    <p>Then click Run again.</p>
+    <button type="button" onclick="outputWithConsoleLog()">Try it</button>
+    <!-- ******************************************* -->
+    <br><br><hr><br>
+    <h2>The window.print() Method</h2>
+
+    <p>Click the button to print the current page.</p>
+    <button type="button" onclick="outputWithWindowPrint()">Try it</button>
+    <!-- ******************************************* -->
+    <br><br><hr><br>
+
+    <!-- *************************************** -->
+    <script src="../JS/Output.js"></script>
+</body>
+</html>

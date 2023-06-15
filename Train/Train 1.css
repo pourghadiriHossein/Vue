@@ -1,0 +1,67 @@
+* {
+    outline: 0;
+    margin: 0;
+    border: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.calculatorBox {
+    background-color: gray;
+    margin: 1% 39%;
+    border-radius: 5px;
+    padding: 1%;
+}
+.displayBox {
+    display: block;
+    background-color: black;
+    color: orange;
+    margin: 1%;
+    border-radius: 5px;
+}
+.calculatorBox > hr {
+    border-top: 1px solid white;
+    margin: 1%;
+}
+p.display {
+    padding: 10% 0 10% 8%;
+    font-size: 32px;
+    font-weight: bold;
+    font-family: Bungee Spice;
+}
+.btnBox {
+    display: block;
+    background-color: black;
+    margin: 1%;
+    border-radius: 5px;
+    text-align: center;
+    direction: rtl;
+    padding: 1% 0;
+}
+.operator {
+    display: inline-block;
+    width: 28%;
+}
+.data {
+    display: inline-block;
+    width: 70%;
+}
+button {
+    display: inline-block;
+    margin: 1%;
+    border-radius: 5px;
+    font-size: x-large;
+    font-weight: bold;
+    width: 50px;
+    height: 50px;
+    transition: all 0.3s;
+}
+button:hover {
+    background-color: gray;
+    transition: all 0.3s;
+}
+button.clean {
+    width: 170px;
+}
+.half {
+    width: 38%;
+}

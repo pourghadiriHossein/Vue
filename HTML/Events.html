@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- <element event='some JavaScript'> With single quotes-->
+    <!-- <element event="some JavaScript"> With double quotes-->
+        <!-- ****************************************** -->
+    <h1>Part 1</h1>    
+    <button onclick="document.getElementById('demo1').innerHTML=Date()">The time is?</button>
+
+    <p id="demo1"></p>
+    <!-- ******************************************     -->
+    <br><br><hr><br>
+    <h1>Part 2</h1>
+    <h2>JavaScript HTML Events</h2>
+    <button onclick="this.innerHTML=Date()">The time is?</button>
+    <!-- **************************************** -->
+    <br><br><hr><br>
+    <h1>Part 3</h1>
+    <h2>JavaScript HTML Events</h2>
+    <p>Click the button to display the date.</p>
+
+    <button onclick="displayDate3()">The time is?</button>
+
+    <script>
+        function displayDate3() {
+            document.getElementById("demo3").innerHTML = Date();
+        }
+    </script>
+
+    <p id="demo3"></p>
+    <!-- ********************************************* -->
+    <br><br><hr><br>
+    <!--         Event              	    Description         -->
+    <!--        onchange	        An HTML element has been changed    -->
+    <!--         onclick	         The user clicks an HTML element    -->
+    <!--       onmouseover	    The user moves the mouse over an HTML element   -->
+    <!--        onmouseout	   The user moves the mouse away from an HTML element   -->
+    <!--        onkeydown	         The user pushes a keyboard key     -->
+    <!--         onload	           The browser has finished loading the page    -->
+</body>
+</html>
