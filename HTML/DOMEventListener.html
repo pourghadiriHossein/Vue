@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #myDiv1, #myDiv2 {
+            background-color: coral;
+            padding: 50px;
+        }
+
+        #myP1, #myP2 {
+            background-color: white; 
+            font-size: 20px;
+            border: 1px solid;
+            padding: 20px;
+        }
+        #myDIV {
+            background-color: coral;
+            border: 1px solid;
+            padding: 50px;
+            color: white;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h2>JavaScript addEventListener() 11</h2>
+
+    <p>This example uses the addEventListener() method to attach a click event to a button.</p>
+    
+    <button id="myBtn1">Try it</button>
+    
+    <p id="demo1"></p>
+    
+    <script>
+        document.getElementById("myBtn1").addEventListener("click", displayDate1);
+        
+        function displayDate1() {
+            document.getElementById("demo1").innerHTML = Date();
+        }
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript addEventListener() 2</h2>
+
+    <p>This example uses the addEventListener() method to attach a click event to a button.</p>
+    
+    <button id="myBtn2">Try it</button>
+    
+    <script>
+        document.getElementById("myBtn2").addEventListener("click", function() {
+            alert("Hello World!");
+        });
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript addEventListener() 3</h2>
+
+    <p>This example uses the addEventListener() method to execute a function when a user clicks on a button.</p>
+    
+    <button id="myBtn3">Try it</button>
+    
+    <script>
+        document.getElementById("myBtn3").addEventListener("click", myFunction3);
+        
+        function myFunction3() {
+            alert ("Hello World!");
+        }
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript addEventListener() 4</h2>
+
+    <p>This example uses the addEventListener() method to add two click events to the same button.</p>
+    
+    <button id="myBtn4">Try it</button>
+    
+    <script>
+        var x = document.getElementById("myBtn4");
+        x.addEventListener("click", myFunction4);
+        x.addEventListener("click", someOtherFunction4);
+        
+        function myFunction4() {
+            alert ("Hello World!");
+        }
+        
+        function someOtherFunction4() {
+            alert ("This function was also executed!");
+        }
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript addEventListener() 5</h2>
+
+    <p>This example uses the addEventListener() method to add many events on the same button.</p>
+    
+    <button id="myBtn5">Try it</button>
+    
+    <p id="demo5"></p>
+    
+    <script>
+        var x = document.getElementById("myBtn5");
+        x.addEventListener("mouseover", myFunction5);
+        x.addEventListener("click", mySecondFunction5);
+        x.addEventListener("mouseout", myThirdFunction5);
+        
+        function myFunction5() {
+            document.getElementById("demo5").innerHTML += "Moused over!<br>";
+        }
+        
+        function mySecondFunction5() {
+            document.getElementById("demo5").innerHTML += "Clicked!<br>";
+        }
+        
+        function myThirdFunction5() {
+            document.getElementById("demo5").innerHTML += "Moused out!<br>";
+        }
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript addEventListener() 6</h2>
+
+    <p>This example uses the addEventListener() method on the window object.</p>
+    
+    <p>Try resizing this browser window to trigger the "resize" event handler.</p>
+    
+    <p id="demo6"></p>
+    
+    <script>
+        window.addEventListener("resize", function(){
+            document.getElementById("demo6").innerHTML = Math.random();
+        });
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript addEventListener() 7</h2>
+
+    <p>This example demonstrates how to pass parameter values when using the addEventListener() method.</p>
+    
+    <p>Click the button to perform a calculation.</p>
+    
+    <button id="myBtn7">Try it</button>
+    
+    <p id="demo7"></p>
+    
+    <script>
+        let p17 = 5;
+        let p27 = 7;
+        document.getElementById("myBtn7").addEventListener("click", function() {
+            myFunction7(p17, p27);
+        });
+        
+        function myFunction7(a7, b7) {
+            document.getElementById("demo7").innerHTML = a7 * b7;
+        }
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript addEventListener() 8</h2>
+
+    <div id="myDiv1">
+      <h2>Bubbling:</h2>
+      <p id="myP1">Click me!</p>
+    </div><br>
+    
+    <div id="myDiv2">
+      <h2>Capturing:</h2>
+      <p id="myP2">Click me!</p>
+    </div>
+    
+    <script>
+        document.getElementById("myP1").addEventListener("click", function() {
+            alert("You clicked the white element!");
+        }, false);
+        
+        document.getElementById("myDiv1").addEventListener("click", function() {
+            alert("You clicked the orange element!");
+        }, false);
+        
+        document.getElementById("myP2").addEventListener("click", function() {
+            alert("You clicked the white element!");
+        }, true);
+        
+        document.getElementById("myDiv2").addEventListener("click", function() {
+            alert("You clicked the orange element!");
+        }, true);
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript removeEventListener() 9</h2>
+
+    <div id="myDIV">
+      <p>This div element has an onmousemove event handler that displays a random number every time you move your mouse inside this orange field.</p>
+      <p>Click the button to remove the div's event handler.</p>
+      <button onclick="removeHandler()" id="myBtn9">Remove</button>
+    </div>
+    
+    <p id="demo9"></p>
+    
+    <script>
+        document.getElementById("myDIV").addEventListener("mousemove", myFunction9);
+        
+        function myFunction9() {
+            document.getElementById("demo9").innerHTML = Math.random();
+        }
+        
+        function removeHandler() {
+            document.getElementById("myDIV").removeEventListener("mousemove", myFunction9);
+        }
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+    <h2>HTML DOM Event Object Reference</h2>
+    <p>
+        For a list of all HTML DOM events,
+         look at our complete 
+        <a href="https://www.w3schools.com/jsref/dom_obj_event.asp">
+            <b>HTML DOM Event Object Reference</b>
+        </a>.
+    </p>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asynchronous</title>
+</head>
+<body>
+    <h1>JavaScript Functions 1</h1>
+    <h2>Callback Functions</h2>
+
+    <p>The result of the calculation is:</p>
+    <p id="demo1"></p>
+
+    <script>
+        function myDisplayer1(something) {
+            document.getElementById("demo1").innerHTML = something;
+        }
+
+        function myCalculator1(num1, num2, myCallback) {
+            let sum = num1 + num2;
+            myCallback(sum);
+        }
+
+        myCalculator1(5, 5, myDisplayer1);
+    </script>
+    <hr>
+    <br><br><br><br>
+    <!-- ************************************************************* -->
+    <h1>JavaScript Functions 2</h1>
+    <h2>setTimeout() with a Callback</h2>
+
+    <p>Wait 3 seconds (3000 milliseconds) for this page to change.</p>
+
+    <h1 id="demo2"></h1>
+
+    <script>
+        setTimeout(myFunction2, 3000);
+
+        function myFunction2() {
+            document.getElementById("demo2").innerHTML = "I love You !!";
+        }
+    </script>
+    <hr>
+    <br><br><br><br>
+    <!-- ************************************************************** -->
+    <h1>JavaScript Functions 3</h1>
+    <h2>setInterval() with a Callback</h2>
+
+    <p>Wait 3 seconds (3000 milliseconds) for this page to change.</p>
+
+    <h1 id="demo3"></h1>
+
+    <script>
+        setTimeout(function() { myFunction3("I love You !!!"); }, 3000);
+
+        function myFunction3(value) {
+            console.log('test');
+            document.getElementById("demo3").innerHTML = value;
+        }
+    </script>
+    <hr>
+    <br><br><br><br>
+    <!-- ****************************************************************** -->
+    <h1>JavaScript Functions 4</h1>
+    <h2>setInterval() with a Callback</h2>
+
+    <p>Using setInterval() to display the time every second (1000 milliseconds).</p>
+
+    <h1 id="demo4"></h1>
+
+    <script>
+        setInterval(myFunction4, 1000);
+
+        function myFunction4() {
+            let d = new Date();
+            document.getElementById("demo4").innerHTML=
+            d.getHours() + ":" +
+            d.getMinutes() + ":" +
+            d.getSeconds();
+        }
+    </script>
+</body>
+</html>

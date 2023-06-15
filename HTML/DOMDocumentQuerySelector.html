@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .div {
+          border: 1px solid black;
+          margin-bottom: 10px;
+        }
+        .a[target] {
+            background-color: yellow;
+        }
+    </style>
+    
+</head>
+<body>
+    <h1>The Document Object 1</h1>
+    <h2>The querySelector() Method</h2>
+    
+    <h3>Add a background color to the first p element:</h3>
+    <p class="p1">This is a p element.</p>
+    <p>This is a p element.</p>
+    
+    <script>
+        document.querySelector(".p1").style.backgroundColor = "red";
+    </script>    
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+    <h1>The Document Object 2</h1>
+    <h2>The querySelector() Method</h2>
+    
+    <p>Add a background color to the first element with class="example":</p>
+    
+    <p class="example2">I am a paragraph.</p>
+    <p class="example2">I am a paragraph.</p> 
+    
+    <script>
+        document.querySelector(".example2").style.backgroundColor = "red";
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+    <h1>The Document Object 3</h1>
+    <h2>The querySelector() Method</h2>
+    
+    <p>Add a background color to the first p element with class="example".</p>
+    
+    <h2 class="example3">A heading</h2>
+    <p class="example3">A paragraph.</p> 
+    
+    <script>
+        document.querySelector("p.example3").style.backgroundColor = "red";
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+    <h1>The Document Object 4</h1>
+    <h2>The querySelector() Method</h2>
+    
+    <p>Change the text of the element with id="demo":</p>
+    <p id="demo4">This is a p element with id="demo".</p>
+    
+    <script>
+        document.querySelector("#demo4").innerHTML = "Hello World!";
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+    <div class="div">
+        <h3>H3 element 5</h3>
+        <p>I am a p element, my parent is a div element.</p>
+    </div>
+      
+    <div class="div">
+        <h3>H3 element</h3>
+        <p>I am a p element, my parent is also a div element.</p>
+    </div>
+      
+    <p>Click the button to change the background color of the first p element in the document where the parent is a div element.</p>
+      
+    <button onclick="myFunction5()">Try it</button>
+      
+    <script>
+        function myFunction5() {
+            var x5 = document.querySelector(".div > p");
+            x5.style.backgroundColor = "red";
+        }
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+    <h1>The Document Object 6</h1>
+    <h2>The querySelector() Method</h2>
+    
+    <p>The CSS selector a[target] makes sure that all links with a target attribute gets a yellow background:</p>
+    
+    <p>Add a red border to the first link with a target attribute:</p>
+    
+    <a class="a" href="https://www.w3schools.com">w3schools.com</a>
+    <a class="a" href="http://www.disney.com" target="_blank">disney.com</a>
+    <a class="a" href="http://www.wikipedia.org" target="_top">wikipedia.org</a>
+    
+    <script>
+        document.querySelector("a[target]").style.border = "10px solid red";
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+    <h1 class="h1">The Document Object 7</h1>
+    <h2 class="h2">The querySelector() Method</h2>
+    
+    <p>Select the first h3 or the first h4:</p>
+    <h3 class="h3">A h3 element</h3>
+    <h4 class="h4">A h4 element</h4>
+    
+    <script>
+        document.querySelector(".h3, .h4").style.backgroundColor = "red";
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+    <h1 class="h18">The Document Object 8</h1>
+    <h2 class="h28">The querySelector() Method</h2>
+    
+    <p>Select the first h3 or the first h4:</p>
+    <h4 class="h48">A h4 element</h4>
+    <h3 class="h38">A h3 element</h3>
+    
+    <script>
+        document.querySelector(".h38, .h48").style.backgroundColor = "red";
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+</body>
+</html>

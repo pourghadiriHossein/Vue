@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>The JavaScript <i>this</i> Keyword 1</h1>
+    <p>In this example, <b>this</b> refers to the <b>person</b> object.</p>
+    <p>Because <b>fullName</b> is a method of the person object.</p>
+    
+    <p id="demo1"></p>
+    
+    <script>
+        // Create an object:
+        const person1 = {
+            firstName: "John",
+            lastName: "Doe",
+            id: 5566,
+            fullName1 : function() {
+                return this.firstName + " " + this.lastName;
+            }
+        };
+        
+        // Display data from the object:
+        document.getElementById("demo1").innerHTML = person1.fullName1();
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+    <h1>The JavaScript <i>this</i> Keyword 3</h1>
+
+    <p>In this example, <b>this</b> refers to the window object:</p>
+    
+    <p id="demo3"></p>
+    
+    <script>
+        let x3 = this;
+        document.getElementById("demo3").innerHTML = x3;
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+    <h1>The JavaScript <i>this</i> Keyword 4</h1>
+
+    <p>In this example, <b>this</b> refers to the window object:</p>
+    <p id="demo5"></p>
+    
+    <script>
+        "use strict";
+        let x5 = this;
+        document.getElementById("demo5").innerHTML = x5;
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+    <h1>The JavaScript <i>this</i> Keyword 6</h1>
+
+    <p>In this example, <b>this</b> refers to the the window object:</p>
+    <p id="demo6"></p>
+    
+    <script>
+        document.getElementById("demo6").innerHTML = myFunction6();
+        
+        function myFunction6() {
+            return this;
+        }
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+    <h1>The JavaScript <i>this</i> Keyword 7</h1>
+
+    <p>In a function, by default, <b>this</b> refers to the global object.</p>
+    
+    <p>Strict mode does not allow default binding, so <b>this</b> is:</p>
+    <p id="demo7"></p>
+    
+    <script>
+        "use strict";
+        document.getElementById("demo7").innerHTML = myFunction7();
+        
+        function myFunction7() {
+            return this;
+        }
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+    <h1>The JavaScript <i>this</i> Keyword 8</h1>
+
+    <button onclick="this.style.display='none'">Click to Remove Me!</button>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+    <h1>The JavaScript <i>this</i> Keyword 9</h1>
+
+    <p>In this example, <b>this</b> refers to the <b>person object</b>.</p>
+    
+    <p id="demo9"></p>
+    
+    <script>
+        // Create an object:
+        const person9 = {
+            firstName  : "John",
+            lastName   : "Doe",
+            id     : 5566,
+            myFunction9 : function() {
+                return this;
+            }
+        };
+        
+        // Display data from the object:
+        document.getElementById("demo9").innerHTML = person9.myFunction9();
+    </script>
+    <br><br><hr><br>
+    <h1>The JavaScript <i>this</i> Keyword 11</h1>
+    <p>In this example <strong>this</strong> refers to person2, even if it is a method of person1:</p>
+    
+    <p id="demo11"></p>
+    
+    <script>
+        const person111 = {
+            fullName11: function() {
+                return this.firstName + " " + this.lastName;
+            }
+        }
+        
+        const person211 = {
+            firstName:"John",
+            lastName: "Doe",
+        }
+        
+        let x11 = person111.fullName11.call(person211); 
+        document.getElementById("demo11").innerHTML = x11; 
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+    <h1>JavaScript Function bind() 12</h1>
+
+    <p>This example creates 2 objects (person and member).</p>
+    <p>The member object borrows the fullname method from person:</p> 
+    
+    <p id="demo12"></p>
+    
+    <script>
+        const person12 = {
+            firstName:"John",
+            lastName: "Doe",
+            fullName12: function() {
+                return this.firstName + " " + this.lastName;
+            }
+        }
+        
+        const member12 = {
+            firstName:"Hege",
+            lastName: "Nilsen",
+        }
+        
+        let fullName12 = person12.fullName12.bind(member12);
+        
+        document.getElementById("demo12").innerHTML = fullName12();
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+</body>
+</html>

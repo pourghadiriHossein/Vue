@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تمرین هجدهم</title>
+    <link rel="stylesheet" href="Train.css">
+    <script src="Train.js" defer></script>
+</head>
+<body>
+    <div class="start">
+        <img src="pers.png" alt="pres" class="img">
+        <span id="chance">&darr;</span>
+        <button onclick="start()">شروع</button>
+        <img src="esteghlal.png" alt="ss" class="img">
+    </div>
+    <div class="redBase">
+        <div class="zone base">
+            <img src="pers.png" alt="pers" id="pres1">
+        </div>
+        <div class="zone base">
+            <img src="pers.png" alt="pers" id="pres2">
+        </div>
+        <div class="zone base">
+            <img src="pers.png" alt="pers" id="pres3">
+        </div>
+    </div>
+    <div class="dropZone">
+        <div id="1" class="zone" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+        <div id="2" class="zone" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+        <div id="3" class="zone" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+        <div id="4" class="zone" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+        <div id="5" class="zone" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+        <div id="6" class="zone" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+        <div id="7" class="zone" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+        <div id="8" class="zone" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+        <div id="9" class="zone" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    </div>
+    <div class="blueBase">
+        <div class="zone base">
+            <img src="esteghlal.png" alt="ss" id="ss1">
+        </div>
+        <div class="zone base">
+            <img src="esteghlal.png" alt="ss" id="ss2">
+        </div>
+        <div class="zone base">
+            <img src="esteghlal.png" alt="ss" id="ss3">
+        </div>
+    </div>
+    <div class="end"></div>
+</body>
+</html>

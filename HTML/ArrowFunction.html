@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>JavaScript Arrow Function 1</h2>
+
+    <p>This example shows the syntax of an Arrow Function, and how to use it.</p>
+    
+    <p id="demo1"></p>
+    
+    <script>
+        let myFunction1 = (a1, b1) => a1 * b1;
+        document.getElementById("demo1").innerHTML = myFunction1(4, 5);
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript Function 2</h2>
+
+    <p>This example shows the syntax of a function, without the use of arrow function syntax.</p>
+    
+    <p id="demo2"></p>
+    
+    <script>
+        var hello2;
+        
+        hello2 = function() {
+            return "Hello World!";
+        }
+        
+        document.getElementById("demo2").innerHTML = hello2();
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript Arrow Function 3</h2>
+
+    <p>This example shows the syntax of an Arrow Function, and how to use it.</p>
+    
+    <p id="demo3"></p>
+    
+    <script>
+        var hello3;
+        
+        hello3 = () => {
+            return "Hello World!";
+        }
+        
+        document.getElementById("demo3").innerHTML = hello3();
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript Arrow Function 4</h2>
+
+    <p>This example shows an Arrow Function without the brackets or the return keyword.</p>
+    
+    <p id="demo4"></p>
+    
+    <script>
+        var hello4;
+        
+        hello4 = () => "Hello World!";
+        
+        document.getElementById("demo4").innerHTML = hello4();
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript Arrow Function 5</h2>
+
+    <p>This example shows an Arrow Function with a parameter.</p>
+    
+    <p id="demo5"></p>
+    
+    <script>
+        var hello5;
+        
+        hello5 = (val5) => "Hello " + val5;
+        
+        document.getElementById("demo5").innerHTML = hello5("Universe!");
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript Arrow Function 6</h2>
+
+    <p>This example shows that if you have only one parameter in an Arrow Function, you can skip the parentheses.</p>
+    
+    <p id="demo6"></p>
+    
+    <script>
+        var hello6;
+        
+        hello6 = val6 => "Hello " + val6;
+        
+        document.getElementById("demo6").innerHTML = hello6("Universe!");
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript "this" 7</h2>
+
+    <p>This example demonstrate that in a regular function, the "this" keyword represents different objects depending on how the function was called.</p>
+    
+    <p>Click the button to execute the "hello" function again, and you will see that this time "this" represents the button object.</p>
+    
+    <button id="btn7">Click Me!</button>
+    
+    <p id="demo7"></p>
+    
+    <script>
+        var hello7;
+        
+        hello7 = function() {
+            document.getElementById("demo7").innerHTML += this;
+        }
+        
+        //The window object calls the function:
+        window.addEventListener("load", hello7);
+        
+        //A button object calls the function:
+        document.getElementById("btn7").addEventListener("click", hello7);
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript "this" 8</h2>
+
+    <p>This example demonstrate that in Arrow Functions, the "this" keyword represents the object that owns the function, no matter who calls the function.</p>
+    
+    <p>Click the button to execute the "hello" function again, and you will see that "this" still  represents the window object.</p>
+    
+    <button id="btn8">Click Me!</button>
+    
+    <p id="demo8"></p>
+    
+    <script>
+        var hello8;
+        
+        hello8 = () => {
+            document.getElementById("demo8").innerHTML += this;
+        }
+        
+        //The window object calls the function:
+        window.addEventListener("load", hello8);
+        
+        //A button object calls the function:
+        document.getElementById("btn8").addEventListener("click", hello8);
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+</body>
+</html>

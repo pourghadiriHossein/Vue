@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>JavaScript Scope 1</h2>
+
+    <p><b>carName</b> is undefined outside myFunction():</p>
+    
+    <p id="demo11"></p>
+    
+    <p id="demo21"></p>
+    
+    <script>
+        myFunction1();
+        
+        function myFunction1() {
+            let carName1 = "Volvo";
+            document.getElementById("demo11").innerHTML = typeof carName1 + " " + carName1;
+        }
+        
+        document.getElementById("demo21").innerHTML = typeof carName1;
+    </script>   
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript Scope 2</h2>
+
+    <p>A GLOBAL variable can be accessed from any script or function.</p>
+    
+    <p id="demo2"></p>
+    
+    <script>
+        let carName2 = "Volvo";
+        myFunction2();
+        
+        function myFunction2() {
+            document.getElementById("demo2").innerHTML = "I can display " + carName2;
+        }
+    </script>    
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript Global Variables 3</h2>
+    <p>If you assign a value to a variable that has not been declared, it will automatically become a GLOBAL variable:</p>
+    
+    <p id="demo3"></p>
+    
+    <script>
+        myFunction3();
+        // code here can use carName as a global variable
+        document.getElementById("demo3").innerHTML = "I can display " + carName3;
+        
+        function myFunction3() {
+            carName3 = "Volvo";
+        }
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript Scope 4</h2>
+
+    <p>In HTML, global variables defined with <b>var</b>, will become window variables.</p>
+    
+    <p id="demo4"></p>
+    
+    <script>
+        var carName4 = "Volvo";
+        
+        // code here can use window.carName
+        document.getElementById("demo4").innerHTML = "I can display " + window.carName4;
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript Global Variables 5</h2>
+
+    <p>In HTML, global variables defined with <b>let</b>, will not become window variables.</p>
+    
+    <p id="demo5"></p>
+    
+    <script>
+        let carName5 = "Volvo";
+        
+        // code here can not use window.carName
+        document.getElementById("demo5").innerHTML = "I can not display " + window.carName5;
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+</body>
+</html>

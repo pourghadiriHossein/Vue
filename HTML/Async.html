@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Async</title>
+  </head>
+  <body>
+    <h2>JavaScript async / await 1</h2>
+
+    <p id="demo1"></p>
+
+    <script>
+      function myDisplayer1(some) {
+        document.getElementById("demo1").innerHTML = some;
+      }
+
+      async function myFunction1() {
+        return "Hello";
+      }
+
+      myFunction1().then(
+        function (value) {
+          myDisplayer1(value);
+        },
+        function (error) {
+          myDisplayer1(error);
+        }
+      );
+    </script>
+    <hr />
+    <br /><br /><br /><br />
+    <!-- ************************************************* -->
+    <h2>JavaScript async / await 2</h2>
+
+    <p id="demo2"></p>
+
+    <script>
+      function myDisplayer2(some) {
+        document.getElementById("demo2").innerHTML = some;
+      }
+
+      async function myFunction2() {
+        return "Hello";
+      }
+
+      myFunction2().then(function (value) {
+        myDisplayer2(value);
+      });
+    </script>
+    <hr />
+    <br /><br /><br /><br />
+    <!-- ************************************************* -->
+    <h2>JavaScript async / await 3</h2>
+
+    <h1 id="demo3"></h1>
+
+    <script>
+      async function myDisplay3() {
+        let myPromise = new Promise(function (resolve, reject) {
+          resolve("I love You !!");
+        });
+        document.getElementById("demo3").innerHTML = await myPromise;
+      }
+
+      myDisplay3();
+    </script>
+    <hr />
+    <br /><br /><br /><br />
+    <!-- ************************************************* -->
+    <h2>JavaScript async / await 4</h2>
+
+    <h1 id="demo4"></h1>
+
+    <script>
+      async function myDisplay4() {
+        let myPromise = new Promise(function (resolve) {
+          resolve("I love You !!");
+        });
+        document.getElementById("demo4").innerHTML = await myPromise;
+      }
+
+      myDisplay4();
+    </script>
+    <hr />
+    <br /><br /><br /><br />
+    <!-- ************************************************* -->
+    <h2>JavaScript async / await</h2>
+
+    <p>Wait 3 seconds (3000 milliseconds) for this page to change.</p>
+
+    <h1 id="demo5"></h1>
+
+    <script>
+      async function myDisplay5() {
+        let myPromise = new Promise(function (resolve) {
+          setTimeout(function () {
+            resolve("I love You !!");
+          }, 3000);
+        });
+        document.getElementById("demo5").innerHTML = await myPromise;
+      }
+
+      myDisplay5();
+    </script>
+    <hr />
+    <br /><br /><br /><br />
+    <!-- ************************************************* -->
+    <h2>JavaScript async / await</h2>
+
+    <p id="demo6"></p>
+
+    <script>
+      async function getFile6() {
+        let myPromise = new Promise(function (resolve) {
+          let req = new XMLHttpRequest();
+          req.open("GET", "../File/Hello.html");
+          req.onload = function () {
+            if (req.status == 200) {
+              resolve(req.response);
+            } else {
+              resolve("File not Found");
+            }
+          };
+          req.send();
+        });
+        document.getElementById("demo6").innerHTML = await myPromise;
+      }
+
+      getFile6();
+    </script>
+  </body>
+</html>
