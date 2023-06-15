@@ -1,0 +1,24 @@
+.dropZone {
+    background-color: gainsboro;
+    margin: 2% 25%;
+    padding: 1%;
+    text-align: center;
+    border-radius: 5px;
+}
+.dropZone > div {
+    vertical-align: top;
+}
+.zone {
+    display: inline-block;
+    width: 300px;
+    height: 300px;
+    background-color: rgba(255, 174, 0, 0.7);
+    border-radius: 5px;
+    margin: 2%;
+}
+img {
+    width: 90%;
+    margin: 20% 5%;
+    border-radius: 5px;
+    opacity: 1;
+}

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>JavaScript Math.random() 1</h2>
+
+    <p>Math.random() returns a random number between 0 (included) and 1 (excluded):</p>
+    
+    <p id="demo1"></p>
+    
+    <script>
+        document.getElementById("demo1").innerHTML = Math.random();
+    </script>    
+    <!-- ********************************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript Math 2</h2>
+
+    <p>Math.floor(Math.random() * 10) returns a random integer between 0 and 9 (both 
+    included):</p>
+    
+    <p id="demo2"></p>
+    
+    <script>
+        document.getElementById("demo2").innerHTML =
+        Math.floor(Math.random() * 10);
+    </script>
+    <!-- ********************************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript Math 3</h2>
+
+    <p>Math.floor(Math.random() * 11) returns a random integer between 0 and 10 (both included):</p>
+    
+    <p id="demo3"></p>
+    
+    <script>
+        document.getElementById("demo3").innerHTML =
+        Math.floor(Math.random() * 11);
+    </script>
+    <!-- ********************************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript Math 4</h2>
+
+    <p>Math.floor(Math.random() * 100)) returns a random integer between 0 and 99 
+    (both included):</p>
+    
+    <p id="demo4"></p>
+    
+    <script>
+        document.getElementById("demo4").innerHTML =
+        Math.floor(Math.random() * 100);
+    </script>
+    <!-- ********************************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript Math 5</h2>
+
+    <p>Math.floor() used with Math.random() * 101 returns a random integer between 0 and 100 
+    (both included):</p>
+    
+    <p id="demo5"></p>
+    
+    <script>
+        document.getElementById("demo5").innerHTML =
+        Math.floor(Math.random() * 101);
+    </script>
+    <!-- ********************************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript Math 6</h2>
+
+    <p>Math.floor(Math.random() * 10) + 1) returns a random integer between 1 and 10 
+    (both included):</p>
+    
+    <p id="demo6"></p>
+    
+    <script>
+        document.getElementById("demo6").innerHTML =
+        Math.floor(Math.random() * 10) + 1;
+    </script>        
+    <!-- ********************************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript Math 7</h2>
+
+    <p>Math.floor(Math.random() * 100) + 1) returns a random integer between 1 and 
+    100 (both included):</p>
+    
+    <p id="demo7"></p>
+    
+    <script>
+        document.getElementById("demo7").innerHTML =
+        Math.floor(Math.random() * 100) + 1;
+    </script>
+    <!-- ********************************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript Math.random() 8</h2>
+
+    <p>Every time you click the button, getRndInteger(min, max) returns a random number between 0 
+    and 9 (both included):</p>
+    
+    <button onclick="document.getElementById('demo8').innerHTML = getRndInteger8(0,10)">Click Me</button>
+    
+    <p id="demo8"></p>
+    
+    <script>
+        function getRndInteger8(min8, max8) {
+            return Math.floor(Math.random() * (max8 - min8)) + min8;
+        }
+    </script>
+    <!-- ********************************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript Math.random() 9</h2>
+
+    <p>Every time you click the button, getRndInteger(min, max) returns a random number between 1 and 10 (both included):</p>
+    
+    <button onclick="document.getElementById('demo9').innerHTML = getRndInteger9(1,10)">Click Me</button>
+    
+    <p id="demo9"></p>
+    
+    <script>
+        function getRndInteger9(min9, max9) {
+            return Math.floor(Math.random() * (max9 - min9 + 1) ) + min9;
+        }
+    </script>
+    <!-- ********************************************************* -->
+    <br><br><hr><br>
+
+</body>
+</html>

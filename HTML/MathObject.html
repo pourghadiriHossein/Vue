@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- ***************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript Math Constants 2</h2>
+
+    <p id="demo2"></p>
+
+    <script>
+        document.getElementById("demo2").innerHTML = 
+        "<p><b>Math.E:</b> " + Math.E + "</p>" +
+        "<p><b>Math.PI:</b> " + Math.PI + "</p>" +
+        "<p><b>Math.SQRT2:</b> " + Math.SQRT2 + "</p>" +
+        "<p><b>Math.SQRT1_2:</b> " + Math.SQRT1_2 + "</p>" +
+        "<p><b>Math.LN2:</b> " + Math.LN2 + "</p>" +
+        "<p><b>Math.LN10:</b> " + Math.LN10 + "</p>" +
+        "<p><b>Math.LOG2E:</b> " + Math.LOG2E + "</p>" +
+        "<p><b>Math.Log10E:</b> " + Math.LOG10E + "</p>";
+    </script>
+    <!-- *************************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript Math.round() 3</h2>
+
+    <p>Math.round(x) returns the value of x rounded to its nearest integer:</p>
+
+    <p id="demo3"></p>
+
+    <script>
+        document.getElementById("demo3").innerHTML = Math.round(4.6);
+    </script>
+    <!-- ********************************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript Math.round() 4</h2>
+
+    <p>Math.round(x) returns the value of x rounded to its nearest integer:</p>
+
+    <p id="demo4"></p>
+
+    <script>
+        document.getElementById("demo4").innerHTML = Math.round(4.5);
+    </script>
+    <h2>JavaScript Math.round() 5</h2>
+
+    <p>Math.round(x) returns the value of x rounded to its nearest integer:</p>
+    
+    <p id="demo5"></p>
+    
+    <script>
+        document.getElementById("demo5").innerHTML = Math.round(4.4);
+    </script>
+    <!-- ********************************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript Math.ceil() 6</h2>
+
+    <p>Math.ceil() rounds a number <strong>up</strong> to its nearest integer:</p>
+
+    <p id="demo6"></p>
+
+    <script>
+        document.getElementById("demo6").innerHTML = Math.ceil(4.4);
+    </script>
+    <!-- ********************************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript Math.floor() 7</h2>
+
+    <p>Math.floor(x) returns the value of x rounded <strong>down</strong> to its nearest integer:</p>
+
+    <p id="demo7"></p>
+
+    <script>
+        document.getElementById("demo7").innerHTML = Math.floor(4.7);
+    </script>
+    <!-- ********************************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript Math.trunc() 8</h2>
+
+    <p>Math.trunc(x) returns the integer part of x:</p>
+    
+    <p id="demo8"></p>
+    
+    <script>
+        document.getElementById("demo8").innerHTML = Math.trunc(4.7);
+    </script>
+    <!-- ********************************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript Math.sign() 9</h2>
+
+    <p>Math.sign(x) returns if x is negative, null or positive:</p>
+    
+    <p id="demo9"></p>
+    
+    <script>
+        document.getElementById("demo9").innerHTML = Math.sign(4);
+    </script>
+    <!-- ********************************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript Math.pow() 10</h2>
+
+    <p>Math.pow(x,y) returns the value of x to the power of y:</p>
+    
+    <p id="demo10"></p>
+    
+    <script>
+        document.getElementById("demo10").innerHTML = Math.pow(8,2);
+    </script>
+    <!-- ********************************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript Math.sqrt() 11</h2>
+
+    <p>Math.sqrt(x) returns the square root of x:</p>
+    
+    <p id="demo11"></p>
+    
+    <script>
+        document.getElementById("demo11").innerHTML = Math.sqrt(64);
+    </script>
+    <!-- ********************************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript Math.abs() 12</h2>
+
+    <p>Math.abs(x) returns the absolute (positive) value of x:</p>
+    
+    <p id="demo12"></p>
+    
+    <script>
+        document.getElementById("demo12").innerHTML = Math.abs(-4.7);
+    </script>
+    <!-- ********************************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript Math.sin() 13</h2>
+
+    <p>Math.sin(x) returns the sin of x (given in radians):</p>
+    <p>Angle in radians = (angle in degrees) * PI / 180.</p>
+    
+    <p id="demo13"></p>
+    
+    <script>
+        document.getElementById("demo13").innerHTML = 
+        "The sine value of 90 degrees is " + Math.sin(90 * Math.PI / 180);
+    </script>    
+    <!-- ********************************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript Math.cos() 14</h2>
+
+    <p>Math.cos(x) returns the cosine of x (given in radians):</p>
+    <p>Angle in radians = (angle in degrees) * PI / 180.</p>
+    
+    <p id="demo14"></p>
+    
+    <script>
+        document.getElementById("demo14").innerHTML = 
+        "The cosine value of 0 degrees is " + Math.cos(0 * Math.PI / 180);
+    </script>
+    <!-- ********************************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript Math.min() 15</h2>
+
+    <p>Math.min() returns the lowest value in a list of arguments:</p>
+    
+    <p id="demo15"></p>
+    
+    <script>
+        document.getElementById("demo15").innerHTML =
+        Math.min(0, 150, 30, 20, -8, -200);
+    </script>
+    <!-- ********************************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript Math.max() 16</h2>
+
+    <p>Math.max() returns the highest value in a list of arguments.</p>
+    
+    <p id="demo16"></p>
+    
+    <script>
+        document.getElementById("demo16").innerHTML =
+        Math.max(0, 150, 30, 20, -8, -200);
+    </script>
+    <!-- ********************************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript Math.random() 17</h2>
+
+    <p>Math.random() returns a random number between 0 and 1:</p>
+    
+    <p id="demo17"></p>
+    
+    <p>Tip: Click on "Run" several times.</p>
+    
+    <script>
+        document.getElementById("demo17").innerHTML = Math.random();
+    </script>
+    <!-- ********************************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript Math.log() 18</h2>
+
+    <p>Math.log() returns the natural logarithm of a number:</p>
+    
+    <p id="demo18"></p>
+    
+    <script>
+        document.getElementById("demo18").innerHTML = Math.log(1);
+    </script>
+    <!-- ********************************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript Math.log() 19</h2>
+
+    <p>Math.log() returns the natural logarithm of a number:</p>
+    
+    <p id="demo19"></p>
+    
+    <script>
+        document.getElementById("demo19").innerHTML = Math.log(2);
+    </script>
+    <!-- ********************************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript Math.log() 20</h2>
+
+    <p>Math.log() returns the natural logarithm of a number:</p>
+    
+    <p id="demo20"></p>
+    
+    <script>
+        document.getElementById("demo20").innerHTML = Math.log(3);
+    </script>
+    <!-- ********************************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript Math.log() 21</h2>
+
+    <p>How many times must we multiply Math.E to get 10?</p>
+    
+    <p id="demo21"></p>
+    
+    <script>
+        document.getElementById("demo21").innerHTML = Math.log(10);
+    </script>
+    <!-- ********************************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript Math.log2() 22</h2>
+
+    <p>Math.log2() returns the base 2 logarithm of a number.</p>
+    <p>How many times must we multiply 2 to get 8?</p>
+    
+    <p id="demo22"></p>
+    
+    <script>
+        document.getElementById("demo22").innerHTML = Math.log2(8);
+    </script>
+    <!-- ********************************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript Math.log10() 23</h2>
+
+    <p>Math.log10() returns the base 10 logarithm of a number.</p>
+    <p>How many times must we multiply 10 to get 1000?</p>
+    
+    <p id="demo23"></p>
+    
+    <script>
+        document.getElementById("demo23").innerHTML = Math.log10(1000);
+    </script>
+    <!-- ********************************************************* -->
+    <br><br><hr><br>
+</body>
+</html>

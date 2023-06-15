@@ -1,0 +1,26 @@
+* {
+    outline: 0;
+    margin: 0;
+    border: 0;
+    padding: 0;
+}
+.mainBox {
+    text-align: center;
+    margin: 10% 35%;
+    padding: 8% 5%;
+    background-color: gray;
+    border-radius: 5px;
+}
+
+h1 {
+    font-size: 42px;
+    font-weight: bold;
+    margin-bottom: 20%;
+}
+
+p {
+    display: inline-block;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0 8%;
+}

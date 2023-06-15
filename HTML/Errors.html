@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>JavaScript Error Handling 1</h2>
+
+    <p>How to use <b>catch</b> to display an error.</p>
+
+    <p id="demo1"></p>
+
+    <script>
+        try {
+            adddlert("Welcome guest!");
+        }
+        catch(err1) {
+            document.getElementById("demo1").innerHTML = err1.message;
+        }
+    </script>
+    <!-- *********************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript try catch 2</h2>
+
+    <p>Please input a number between 5 and 10:</p>
+    
+    <input id="demo2" type="text">
+    <button type="button" onclick="myFunction2()">Test Input</button>
+    <p id="p012"></p>
+    
+    <script>
+        function myFunction2() {
+            const message2 = document.getElementById("p012");
+            message2.innerHTML = "";
+            let x2 = document.getElementById("demo2").value;
+            try { 
+                if(x2 == "")  throw "empty";
+                if(isNaN(x2)) throw "not a number";
+                x2 = Number(x2);
+                if(x2 < 5)  throw "too low";
+                if(x2 > 10)   throw "too high";
+            }
+            catch(err2) {
+                message2.innerHTML = "Input is " + err2;
+            }
+        }
+    </script>
+    <!-- *********************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript try catch 3</h2>
+
+    <p>Please input a number between 5 and 10:</p>
+    
+    <input id="demo3" type="text">
+    <button type="button" onclick="myFunction3()">Test Input</button>
+    
+    <p id="p013"></p>
+    
+    <script>
+        function myFunction3() {
+            const message3 = document.getElementById("p013");
+            message3.innerHTML = "";
+            let x3 = document.getElementById("demo3").value;
+            try { 
+                if(x3 == "")  throw "is empty";
+                if(isNaN(x3)) throw "is not a number";
+                x3 = Number(x3);
+                if(x3 > 10)   throw "is too high";
+                if(x3 < 5)  throw "is too low";
+            }
+            catch(err3) {
+                message3.innerHTML = "Input " + err3;
+            }
+            finally {
+                document.getElementById("demo3").value = "";
+        }
+        }
+    </script>
+    <!-- *********************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript Errors 4</h2>
+
+    <p>You cannot set the number of significant digits of a number to 500:</p>
+    
+    <p id="demo4">
+    
+    <script>
+        let num4 = 1;
+        try {
+            num4.toPrecision(500);
+        }
+        catch(err4) {
+            document.getElementById("demo4").innerHTML = err4.name;
+        }
+    </script>
+    <!-- *********************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript Errors 5</h2>
+
+    <p>You cannot use the value of a non-existing variable:</p>
+    
+    <p id="demo5"></p>
+    
+    <script>
+        let x5 = 5;
+        try {
+            x5 = y5 + 1;
+        }
+        catch(err5) {
+            document.getElementById("demo5").innerHTML = err5.name;
+        }
+    </script>
+    <!-- *********************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript Errors 6</h2>
+
+    <p>You cannot evaluate code that contains a syntax error:</p>
+    
+    <p id="demo6"></p>
+    
+    <script>
+        try {
+            eval("alert('Hello)");
+        }
+        catch(err6) {
+            document.getElementById("demo6").innerHTML = err6.name;
+        }
+    </script>
+    <!-- *********************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript Errors 7</h2>
+
+    <p>Some characters cannot be decoded with decodeURI():</p>
+    
+    <p id="demo7"></p>
+    
+    <script>
+        try {
+            decodeURI("%%%");
+        }
+        catch(err7) {
+            document.getElementById("demo7").innerHTML = err7.name;
+        }
+    </script>
+    <!-- *********************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript Errors 8</h2>
+
+    <p>You cannot convert a number to upper case:</p>
+    
+    <p id="demo8"></p>
+    
+    <script>
+        let num8 = 1;
+        try {
+            num8.toUpperCase();
+        }
+        catch(err8) {
+            document.getElementById("demo8").innerHTML = err8.name;
+        }
+    </script>    
+    <!-- ************************************** -->
+    <br><br><hr><br>
+</body>
+</html>

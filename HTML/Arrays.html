@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>JavaScript Arrays 1</h2>
+
+    <p id="demo1"></p>
+
+    <script>
+        const cars1 = ["Saab", "Volvo", "BMW"];
+        document.getElementById("demo1").innerHTML = cars1;
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript Arrays 3</h2>
+
+    <p id="demo3"></p>
+
+    <script>
+        const cars3 = [
+            "Saab",
+            "Volvo",
+            "BMW"
+        ];
+        document.getElementById("demo3").innerHTML = cars3;
+    </script>
+    <!-- ******************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript Arrays 4</h2>
+
+    <p id="demo4"></p>
+
+    <script>
+        const cars4 = [];
+        cars4[0]= "Saab";
+        cars4[1]= "Volvo";
+        cars4[2]= "BMW";
+        document.getElementById("demo4").innerHTML = cars4;
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript Arrays 5</h2>
+
+    <p id="demo5"></p>
+
+    <script>
+        const cars5 = new Array("Saab", "Volvo", "BMW");
+        document.getElementById("demo5").innerHTML = cars5;
+    </script>
+    <!-- ********************************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript Arrays 6</h2>
+
+    <p>JavaScript array elements are accessed using numeric indexes (starting from 0).</p>
+
+    <p id="demo6"></p>
+
+    <script>
+        const cars6 = ["Saab", "Volvo", "BMW"];
+        document.getElementById("demo6").innerHTML = cars6[0];
+    </script>
+    <!-- *********************************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript Arrays 7</h2>
+
+    <p>JavaScript array elements are accessed using numeric indexes (starting from 0).</p>
+
+    <p id="demo7"></p>
+
+    <script>
+        const cars7 = ["Saab", "Volvo", "BMW"];
+        cars7[0] = "Opel";
+        document.getElementById("demo7").innerHTML = cars7;
+    </script>
+    <!-- ********************************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript Arrays 9</h2>
+
+    <p>Arrays use numbers to access its elements.</p>
+
+    <p id="demo9"></p>
+
+    <script>
+        const person9 = ["John", "Doe", 46];
+        document.getElementById("demo9").innerHTML = person9[0];
+    </script>
+    <!-- *************************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript Objects10</h2>
+    <p>JavaScript uses names to access object properties.</p>
+    <p id="demo10"></p>
+
+    <script>
+        const person10 = {firstName:"John", lastName:"Doe", age:46};
+        document.getElementById("demo10").innerHTML = person10.firstName;
+    </script>
+    <!-- *************************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript Arrays 11</h2>
+    <p>The length property returns the length of an array.</p>
+
+    <p id="demo11"></p>
+
+    <script>
+        const fruits11 = ["Banana", "Orange", "Apple", "Mango"];
+        document.getElementById("demo11").innerHTML = fruits11.length;
+    </script>
+    <!-- ******************************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript Arrays 13</h2>
+
+    <p>JavaScript array elements are accesses using numeric indexes (starting from 0).</p>
+
+    <p id="demo13"></p>
+
+    <script>
+        var fruits13 = ["Banana", "Orange", "Apple", "Mango"];
+        document.getElementById("demo13").innerHTML = fruits13[fruits13.length-1];
+    </script>
+    <!-- ******************************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript Arrays 16</h2>
+
+    <p>The push method appends a new element to an array.</p>
+
+    <button onclick="myFunction16()">Try it</button>
+
+    <p id="demo16"></p>
+
+    <script>
+        const fruits16 = ["Banana", "Orange", "Apple"];
+        document.getElementById("demo16").innerHTML = fruits16;
+
+        function myFunction16() {
+            fruits16.push("Lemon");
+            document.getElementById("demo16").innerHTML = fruits16;
+        }
+    </script>
+    <!-- ******************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript Arrays 17</h2>
+
+    <p>The length property provides an easy way to append new elements to an array without using the push() method.</p>
+
+    <button onclick="myFunction17()">Try it</button>
+
+    <p id="demo17"></p>
+
+    <script>
+        const fruits17 = ["Banana", "Orange", "Apple"];
+        document.getElementById("demo17").innerHTML = fruits17;
+
+        function myFunction17() {
+            fruits17[fruits17.length] = "Lemon";
+            document.getElementById("demo17").innerHTML = fruits17;
+        }
+    </script>
+    <!-- ************************************************ -->
+    <br><br><hr><br>
+    <h2>JavaScript Arrays 18</h2>
+
+    <p>Adding elements with high indexes can create undefined "holes" in an array.</p>
+
+    <p id="demo18"></p>
+
+    <script>
+        const fruits18 = ["Banana", "Orange", "Apple"];
+        fruits18[6] = "Lemon";
+
+        let fLen18 = fruits18.length;
+        let text18 = "";
+        for (i18 = 0; i18 < fLen18; i18++) {
+        text18 += fruits18[i18] + "<br>";
+        }
+
+        document.getElementById("demo18").innerHTML = text18;
+    </script>
+    <!-- ************************************************ -->
+    <br><br><hr><br>
+    <h2>JavaScript Arrays 20</h2>
+
+    <p>If you use a named index when accessing an array, JavaScript will redefine the array to a standard object, and some array methods and properties will produce undefined or incorrect results.</p>
+
+    <p id="demo20"></p>
+
+    <script>
+        const person20 = [];
+        person20["firstName"] = "John";
+        person20["lastName"] = "Doe";
+        person20["age"] = 46; 
+        document.getElementById("demo20").innerHTML =
+        person20[0] + " " + person20.length;
+    </script>
+    <!-- ***************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript Arrays 21</h2>
+
+    <p>Avoid using new Array(). Use [] instead.</p>
+
+    <p id="demo21"></p>
+
+    <script>
+        //const points = new Array(40, 100, 1, 5, 25, 10);
+        const points21 = [40, 100, 1, 5, 25, 10];
+        document.getElementById("demo21").innerHTML = points21[0];  
+    </script>
+    <!-- ********************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript Arrays 22</h2>
+
+    <p>Create an Array with three elements.</p>
+
+    <p id="demo22"></p>
+
+    <script>
+        var points22 = new Array(40, 100, 1);
+        document.getElementById("demo22").innerHTML = points22;  
+    </script>
+    <!-- ********************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript Arrays 27</h2>
+
+    <p>The typeof operator, when used on an array, returns object:</p>
+
+    <p id="demo27"></p>
+
+    <script>
+        const fruits27 = ["Banana", "Orange", "Apple", "Mango"];
+        document.getElementById("demo27").innerHTML = typeof fruits27;
+    </script>
+    <!-- ************************************************ -->
+    <br><br><hr><br>
+    <h2>JavaScript Arrays 28</h2>
+
+    <p id="demo28"></p>
+
+    <script>
+        const fruits28 = ["Banana", "Orange", "Apple"];
+        document.getElementById("demo28").innerHTML = Array.isArray(fruits28);
+    </script>
+    <!-- ************************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript Arrays 29</h2>
+
+    <p>The instanceof operator returns true when used on an array:</p>
+
+    <p id="demo29"></p>
+
+    <script>
+        var fruits29 = ["Banana", "Orange", "Apple"];
+        document.getElementById("demo29").innerHTML = fruits29 instanceof Array;
+    </script>
+    <!-- ********************************************************* -->
+    <br><br><hr><br>
+    
+</body>
+</html>

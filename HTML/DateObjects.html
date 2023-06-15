@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>JavaScript new Date() 1</h2>
+
+    <p id="demo1"></p>
+
+    <script>
+        const d1 = new Date();
+        document.getElementById("demo1").innerHTML = d1;
+    </script>
+    <!-- *********************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript new Date() 3</h2>
+
+    <p>Using new Date(7 numbers), creates a new date object with the specified date and time:</p>
+
+    <p id="demo3"></p>
+
+    <script>
+        const d3 = new Date(2018, 11, 24, 10, 33, 30, 0);
+        document.getElementById("demo3").innerHTML = d3;
+    </script>
+    <!-- ************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript new Date() 7</h2>
+    <p>5 numbers specify year, month, day, hour, and minute:</p>
+
+    <p id="demo7"></p>
+
+    <script>
+        const d7 = new Date(2018, 11, 24, 10, 33);
+        document.getElementById("demo7").innerHTML = d7;
+    </script>
+    <!-- ********************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript new Date() 8</h2>
+    <p>4 numbers specify year, month, day, and hour:</p>
+
+    <p id="demo8"></p>
+
+    <script>
+        const d8 = new Date(2018, 11, 24, 10);
+        document.getElementById("demo8").innerHTML = d8;
+    </script>
+    <!-- ************************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript new Date() 9</h2>
+    <p>3 numbers specify year, month, and day:</p>
+
+    <p id="demo9"></p>
+
+    <script>
+        const d9 = new Date(2018, 11, 24);
+        document.getElementById("demo9").innerHTML = d9;
+    </script>
+    <!-- ************************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript new Date() 10</h2>
+    <p>2 numbers specify year and  month:</p>
+
+    <p id="demo10"></p>
+
+    <script>
+        const d10 = new Date(2018, 11);
+        document.getElementById("demo10").innerHTML = d10;
+    </script>
+    <!-- *************************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript new Date() 11</h2>
+    <p>One parameter will be interpreted as new Date(milliseconds).</p>
+
+    <p id="demo11"></p>
+
+    <script>
+        const d11 = new Date(2018);
+        document.getElementById("demo11").innerHTML = d11;
+    </script>
+    <!-- ********************************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript new Date() 12</h2>
+    <p>Two digit years will be interpreted as 19xx:</p>
+
+    <p id="demo12"></p>
+
+    <script>
+        const d12 = new Date(99, 11, 24);
+        document.getElementById("demo12").innerHTML = d12;
+    </script>
+    <!-- ***************************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript new Date() 13</h2>
+    <p>One digit years will be interpreted as 19xx:</p>
+
+    <p id="demo13"></p>
+
+    <script>
+        const d13 = new Date(9, 11, 24);
+        document.getElementById("demo13").innerHTML = d13;
+    </script>
+    <!-- *********************************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript new Date() 14</h2>
+    <p>A Date object can be created with a specified date and time:</p>
+
+    <p id="demo14"></p>
+
+    <script>
+        const d14 = new Date("October 13, 2014 11:13:00");
+        document.getElementById("demo14").innerHTML = d14;
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript new Date() 15</h2>
+    <p>Using new Date(milliseconds), creates a new date object as January 1, 1970, 00:00:00 Universal Time (UTC) plus the milliseconds:</p>
+
+    <p id="demo15"></p>
+
+    <script>
+        const d15 = new Date(0);
+        document.getElementById("demo15").innerHTML = d15;
+    </script>
+    <!-- ******************************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript new Date() 16</h2>
+    <p>100000000000 milliseconds from Jan 1, 1970, is approximately Mar 3, 1973:</p>
+
+    <p id="demo16"></p>
+
+    <script>
+        const d16 = new Date(100000000000);
+        document.getElementById("demo16").innerHTML = d16;
+    </script>
+    <!-- ******************************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript new Date() 17</h2>
+    <p>100000000000 milliseconds from Jan 1, 1970, is approximately Oct 31, 1966:</p>
+
+    <p id="demo17"></p>
+
+    <script>
+        const d17 = new Date(-100000000000);
+        document.getElementById("demo17").innerHTML = d17;
+    </script>
+    <!-- ********************************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript new Date() 18</h2>
+    <p>Using new Date(milliseconds), creates a new date object as January 1, 1970, 00:00:00 Universal Time (UTC) plus the milliseconds:</p>
+
+    <p id="demo18"></p>
+
+    <script>
+        const d18 = new Date(86400000);
+        document.getElementById("demo18").innerHTML = d18;
+    </script>
+
+    <p>One day (24 hours) is 86,400,000 milliseconds.</p>
+    <!-- **************************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript toString() 20</h2>
+    <p>The toString() method converts a date to a string:</p>
+
+    <p id="demo20"></p>
+
+    <script>
+        const d20 = new Date();
+        document.getElementById("demo20").innerHTML = d20.toString();
+    </script>
+    <!-- ************************************************* -->
+    <br><br><hr><br>
+    <h2>JavaScript Date() 21</h2>
+    <p>The toUTCString() method converts a date to a UTC string (a date display standard):</p>
+
+    <p id="demo21"></p>
+
+    <script>
+        const d21 = new Date();
+        document.getElementById("demo21").innerHTML = d21.toUTCString();
+    </script>
+    <!-- **************************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript toDateString() 22</h2>
+    <p>The toDateString() method converts a date to a date string:</p>
+
+    <p id="demo22"></p>
+
+    <script>
+        const d22 = new Date();
+        document.getElementById("demo22").innerHTML = d22.toDateString();
+    </script>
+    <!-- *********************************************** -->
+    <br><br><hr><br>
+    <h2>JavaScript toISOString() 23</h2>
+    <p>The toISOString() method converts a date to a date string, using the ISO standard format:</p>
+
+    <p id="demo23"></p>
+
+    <script>
+        const d23 = new Date();
+        document.getElementById("demo23").innerHTML = d23.toISOString();
+    </script>
+    <!-- ****************************************************** -->
+    <br><br><hr><br>
+
+</body>
+</html>
