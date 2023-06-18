@@ -128,6 +128,14 @@ $user = User::create([
 ]);
 $user->assignRole(Role::findByName(Roles::ADMIN, 'api'));
 ```
+- ### Update DatabaseSeeder File
+```bash
+$this->call([
+    OauthClinetSeeder::class,
+    PermissionSeeder::class,
+    UserSeeder::class,
+]);
+```
 ## Update config/cors.php file
 ```bash
 'paths' => ['api/*', 'sanctum/csrf-cookie', 'oauth/token'],
