@@ -1,95 +1,131 @@
-# Write Models Relation in server side
+# Create Primary data in server side
 
-## Models
-- ### User
+## Create Enum Folder in app Folder
+- ### Create Permissions.php File
 ```bash
-use HasApiTokens, Notifiable, HasRoles;
+<?php
 
-protected $guard_name = "api";
+namespace App\Enum;
 
-protected $fillable = [
-    'name',
-    'email',
-    'password',
-];
+final class Permissions {
+    public const VIEW_MY_PROFILE = 'view my profile';
+    public const UPDATE_MY_ACCOUNT = 'update my account';
 
-protected $hidden = [
-    'password',
-    'remember_token',
-];
+    public const VIEW_ANY_POST = 'view any post';
+    public const LIKE_ANY_POST = 'like any post';
 
-protected $casts = [
-    'email_verified_at' => 'datetime',
-];
+    public const CREATE_NEW_POST = 'create new post';
+    public const UPDATE_MY_POST = 'update my post';
+    public const DELETE_MY_POST = 'delete my post';
 
-public function posts() {
-    return $this->hasMany(Post::class);
-}
+    public const UPDATE_ANY_POST = 'update any post';
+    public const DELETE_ANY_POST = 'delete any post';
 
-public function upVotes() {
-    return $this->hasMany(UpVote::class);
-}
-
-public function media() {
-    return $this->morphToMany(Media::class, 'model', 'model_has_media');
+    public const VIEW_ANY_ACCOUNT = 'view any account';
+    public const CREATE_ANY_ACCOUNT = 'create any account';
+    public const UPDATE_ANY_ACCOUNT = 'update any account';
+    public const DELETE_ANY_ACCOUNT = 'delete any account';
 }
 ```
-- ### Post
+- ### Create Roles.php File
 ```bash
-use SoftDeletes;
+<?php
 
-protected $fillable = [
-    'title',
-    'description',
-    'up_vote_count',
-    'location'
-];
+namespace App\Enum;
 
-public function user() {
-    return $this->belongsTo(User::class);
-}
-
-public function votes() {
-    return $this->hasMany(UpVote::class);
-}
-
-public function media() {
-    return $this->morphToMany(Media::class, 'model', 'model_has_media');
+final class Roles {
+    public const ADMIN = 'admin';
+    public const USER = 'user';
 }
 ```
-- ### UpVote
+
+## Seeder Part
+- ### OauthClinetSeeder Command
 ```bash
-public $incrementing = false;
-
-public function user() {
-    return $this->belongsTo(User::class);
-}
-
-public function post() {
-    return $this->belongsTo(Post::class);
-}
-
-protected static function boot()
+php artisan make:seeder OauthClinetSeeder
+```
+- ### OauthClinetSeeder run function
+```bash
+Client::create([
+    'name' => 'Web Client',
+    'id' => env('AUTH_WEB_CLIENT_ID',1),
+    'secret' => env('AUTH_WEB_CLIENT_SECRET'),
+    'redirect' => 'localhost:8000',
+    'provider' => 'users',
+    'personal_access_client' => 0,
+    'password_client' => 1,
+    'revoked' => 0,
+]);
+```
+- ### PermissionSeeder Command
+```bash
+php artisan make:seeder PermissionSeeder
+```
+- ### PermissionSeeder run function
+```bash
+public function run(): void
 {
-    parent::boot();
-    UpVote::created(function(UpVote $upVote) {
-        $post = $upVote->post;
-        $post->increment('up_vote_count', 1);
-        $post->save();
-    });
-    UpVote::deleted(function(UpVote $upVote) {
-        $post = $upVote->post;
-        $post->decrement('up_vote_count', 1);
-        $post->save();
-    });
+    $admin = Role::create(['name' => Roles::ADMIN, 'guard_name' => 'api']);
+    $user = Role::create(['name' => Roles::USER, 'guard_name' => 'api']);
+
+    Permission::create(['name' => Permissions::VIEW_MY_PROFILE, 'guard_name' => 'api']);
+    Permission::create(['name' => Permissions::UPDATE_MY_ACCOUNT, 'guard_name' => 'api']);
+
+    Permission::create(['name' => Permissions::VIEW_ANY_POST, 'guard_name' => 'api']);
+    Permission::create(['name' => Permissions::LIKE_ANY_POST, 'guard_name' => 'api']);
+
+    Permission::create(['name' => Permissions::CREATE_NEW_POST, 'guard_name' => 'api']);
+    Permission::create(['name' => Permissions::UPDATE_MY_POST, 'guard_name' => 'api']);
+    Permission::create(['name' => Permissions::DELETE_MY_POST, 'guard_name' => 'api']);
+
+    Permission::create(['name' => Permissions::UPDATE_ANY_POST, 'guard_name' => 'api']);
+    Permission::create(['name' => Permissions::DELETE_ANY_POST, 'guard_name' => 'api']);
+
+    Permission::create(['name' => Permissions::VIEW_ANY_ACCOUNT, 'guard_name' => 'api']);
+    Permission::create(['name' => Permissions::CREATE_ANY_ACCOUNT, 'guard_name' => 'api']);
+    Permission::create(['name' => Permissions::UPDATE_ANY_ACCOUNT, 'guard_name' => 'api']);
+    Permission::create(['name' => Permissions::DELETE_ANY_ACCOUNT, 'guard_name' => 'api']);
+
+    $admin->givePermissionTo(Permissions::VIEW_MY_PROFILE);
+    $admin->givePermissionTo(Permissions::UPDATE_MY_ACCOUNT);
+
+    $admin->givePermissionTo(Permissions::VIEW_ANY_POST);
+    $admin->givePermissionTo(Permissions::LIKE_ANY_POST);
+
+    $admin->givePermissionTo(Permissions::CREATE_NEW_POST);
+    $admin->givePermissionTo(Permissions::UPDATE_MY_POST);
+    $admin->givePermissionTo(Permissions::DELETE_MY_POST);
+
+    $admin->givePermissionTo(Permissions::UPDATE_ANY_POST);
+    $admin->givePermissionTo(Permissions::DELETE_ANY_POST);
+
+    $admin->givePermissionTo(Permissions::VIEW_ANY_ACCOUNT);
+    $admin->givePermissionTo(Permissions::CREATE_ANY_ACCOUNT);
+    $admin->givePermissionTo(Permissions::UPDATE_ANY_ACCOUNT);
+    $admin->givePermissionTo(Permissions::DELETE_ANY_ACCOUNT);
+
+    $user->givePermissionTo(Permissions::VIEW_MY_PROFILE);
+    $user->givePermissionTo(Permissions::UPDATE_MY_ACCOUNT);
+
+    $user->givePermissionTo(Permissions::VIEW_ANY_POST);
+    $user->givePermissionTo(Permissions::LIKE_ANY_POST);
+
+    $user->givePermissionTo(Permissions::CREATE_NEW_POST);
+    $user->givePermissionTo(Permissions::UPDATE_MY_POST);
+    $user->givePermissionTo(Permissions::DELETE_MY_POST);
 }
 ```
-- ### Media
+- ### UserSeeder Command
 ```bash
-protected $fillable = ['size', 'mime_type', 'url'];
-
-public function user() {
-    return $this->belongsTo(User::class);
-}
+php artisan make:seeder UserSeeder
+```
+- ### UserSeeder run function
+```bash
+$user = User::create([
+    'name' => 'حسین پورقدیری',
+    'email' => 'hossein.654321@yahoo.com',
+    'password' => Hash::make('123456')
+]);
+$user->assignRole(Role::findByName(Roles::ADMIN, 'api'));
 ```
 
