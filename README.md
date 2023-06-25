@@ -1,4 +1,4 @@
-# Develop Client Side, Create Sample My Posts Part
+# Develop Client Side, Create Sample All Posts Part
 
 ## in components/dashboard/ts folder, Create allPostsComponent.ts File
 ```bash
