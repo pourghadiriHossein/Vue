@@ -1,9 +1,10 @@
 # Develop Client Side, Create Sample My Posts Part
 
-## in components/dashboard/ts folder, Create myPostsComponent.ts File
+## in components/dashboard/ts folder, Create allPostsComponent.ts File
 ```bash
 const columns: any = [
   { name: 'id', align: 'left', label: 'ID', field: 'id', sortable: true },
+  { name: 'username', align: 'center', label: 'User Name', field: 'username', sortable: true },
   { name: 'title', align: 'center', label: 'Title', field: 'title', sortable: true },
   { name: 'description', align: 'center', label: 'Description', field: 'description', sortable: true,format: (val:string) => `${val.slice(0,40)} ...`, },
 ]
@@ -32,90 +33,11 @@ const rows = [
   },
 ];
 
+
 export {columns, rows}
 ```
 ## in components/dashboard/vue folder
-- ### Create CreatePost.vue File
-```bash
-<script lang="ts" setup>
-  import { defineProps, defineEmits, ref } from 'vue';
-
-  const props = defineProps({
-    modelValue: {
-      default: false,
-    },
-    img: {
-      default: <any> null
-    },
-    title: {
-      default: ''
-    },
-    description: {
-      default: ''
-    },
-  });
-
-  const model = ref(null);
-
-  const createPostParameter = ref({
-    title: '',
-    description: '',
-    image: undefined,
-  })
-
-  const emit = defineEmits(['update:model-value']);
-
-  const close = () => {
-    emit.call(this, 'update:model-value', false);
-  };
-
-  const accepted = () => {
-    emit.call(this, 'update:model-value', false);
-  };
-</script>
-
-<template>
-
-  <q-dialog :model-value="modelValue" persistent>
-    <q-card style="min-width: 350px">
-      <q-card-section>
-        <div class="text-h6">Create New Post</div>
-      </q-card-section>
-      <q-card-section class="q-pt-none">
-        <q-input dense v-model:model-value="createPostParameter.title" label="Enter Your Title"/>
-      </q-card-section>
-      <q-card-section class="q-pt-none">
-          <q-input type="textarea" dense v-model:model-value="createPostParameter.description" label="Enter Your Description"/>
-      </q-card-section>
-      <q-card-section class="q-pt-none">
-        <q-file filled bottom-slots v-model:model-value="createPostParameter.image" label="Post Image" counter>
-          <template v-slot:prepend>
-            <q-icon name="cloud_upload" @click.stop.prevent />
-          </template>
-          <template v-slot:append>
-            <q-icon name="close" @click.stop.prevent="createPostParameter.image = null" class="cursor-pointer" />
-          </template>
-          <template v-slot:hint>
-            File Size
-          </template>
-        </q-file>
-      </q-card-section>
-      <q-card-actions align="right" class="text-primary">
-        <q-btn color="red" icon-right="close" label="Cancel" @click="close"/>
-        <q-btn color="light-blue-8" icon-right="create" label="Create" @click="accepted"/>
-      </q-card-actions>
-    </q-card>
-  </q-dialog>
-</template>
-
-<style>
-.confirm-dialog {
-  width: 95%;
-  max-width: 400px;
-}
-</style>
-```
-- ### Create DeletePost.vue File
+- ### Create AdminDeletePost.vue File
 ```bash
 <script setup lang="ts">
   import { defineProps, defineEmits } from 'vue';
@@ -195,7 +117,7 @@ export {columns, rows}
 }
 </style>
 ```
-- ### Create UpdatePost.vue File
+- ### Create AdminUpdatePost.vue File
 ```bash
 <script setup lang="ts">
   import { defineProps, defineEmits, ref, watch } from 'vue';
@@ -280,7 +202,7 @@ export {columns, rows}
 }
 </style>
 ```
-## Update MyPostsPage.vue File
+## Update AllPostsPage.vue File
 ```bash
 <template>
   <div class="q-pa-md">
@@ -299,13 +221,6 @@ export {columns, rows}
             <q-icon name="search" />
           </template>
         </q-input>
-        <q-btn label="Create New Post" color="light-blue-8" class="q-ml-md" @click="createPostFunction()"/>
-        <create-post
-        v-model:model-value="createPostDialog"
-        :img="createPostParameter.img"
-        :title="createPostParameter.title"
-        :description="createPostParameter.description"
-        ></create-post>
       </template>
       <template v-slot:header="props">
           <q-tr :props="props">
@@ -338,35 +253,29 @@ export {columns, rows}
         </template>
     </q-table>
   </div>
-  <update-post
+  <admin-update-post
   v-model:model-value="updatePostDialog"
   :id="updatePostParameter.id"
   :title="updatePostParameter.title"
   :description="updatePostParameter.description"
-  ></update-post>
-  <delete-post
+  ></admin-update-post>
+  <admin-delete-post
   v-model:model-value="deletePostDialog"
   :id="deletePostParameter.id"
   :img="deletePostParameter.img"
   :title="deletePostParameter.title"
   :username="deletePostParameter.username"
   :description="deletePostParameter.description"
-  ></delete-post>
+  ></admin-delete-post>
 </template>
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import {columns, rows} from 'src/components/dashboard/ts/myPostsComponent';
-  import CreatePost from 'src/components/dashboard/vue/CreatePost.vue'
-  import UpdatePost from 'src/components/dashboard/vue/UpdatePost.vue';
-  import DeletePost from 'src/components/dashboard/vue/DeletePost.vue';
+  import {columns, rows} from 'src/components/dashboard/ts/allPostsComponent';
+  import AdminUpdatePost from 'src/components/dashboard/vue/AdminUpdatePost.vue';
+  import AdminDeletePost from 'src/components/dashboard/vue/AdminDeletePost.vue';
 
   const filter = ref('');
-  const createPostParameter = ref({
-    img: <string> '',
-    title: <string> '',
-    description: <string> ''
-  });
   const updatePostParameter = ref({
     id: <number>0,
     title: <string> '',
@@ -379,13 +288,6 @@ export {columns, rows}
     username: <string> '',
     description: <string> '',
   });
-  const createPostDialog = ref(false);
-  const createPostFunction = () => {
-    createPostParameter.value.img = '';
-    createPostParameter.value.title = '';
-    createPostParameter.value.description = '';
-    createPostDialog.value = true;
-  };
   const updatePostDialog = ref(false);
   const updatePostFunction = (row: any) => {
     updatePostParameter.value.id = row.id;
