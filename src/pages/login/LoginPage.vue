@@ -13,7 +13,7 @@
             </q-form>
           </q-card-section>
           <q-card-actions class="q-px-md">
-            <q-btn unelevated color="light-blue-8" size="lg" class="full-width" label="login"/>
+            <q-btn @click="login" unelevated color="light-blue-8" size="lg" class="full-width" label="login"/>
             <q-btn @click="register" unelevated color="red" size="lg" class="full-width q-ma-sm" label="Register"/>
           </q-card-actions>
           <q-card-section class="text-center q-pa-none">
@@ -27,6 +27,7 @@
 <script>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useAuthStore } from 'src/stores/auth-store'
 
 export default {
     data () {
@@ -35,8 +36,19 @@ export default {
         username: '',
         password: '',
       });
+      const authStore = useAuthStore();
       return {
         guestUser,
+        login () {
+          authStore
+          .authenticate(guestUser.value.username, guestUser.value.password)
+          .then(() => {
+            router.replace({name: 'dashboard'})
+          },
+          (error) => {
+            console.log(`No Internet, Connection Lost because server not serve!!!\n${error}`);
+          })
+        },
         register() {
           router.replace({name: 'register'})
         },
