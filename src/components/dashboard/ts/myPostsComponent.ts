@@ -11,6 +11,8 @@ const rows = [
     title : 'Best View',
     username: 'Hossein Pourghadiri',
     description : 'Lorem ipsum dolor sit amet, nam ne liber propriae, vel no vidit nullam volutpat. Ut harum inciderint usu, vivendum invenire est ut. In vix nobis legendos deterruisset. Quas dignissim cum ad. Sea quaestio assentior ut, ad eum idque regione salutatus. Inani splendide scripserit et nec. Et has aperiam civibus.',
+    latitude: 37.33,
+    longitude: 49.44,
   },
   {
     id: 2,
@@ -18,6 +20,8 @@ const rows = [
     title : 'Best View',
     username: 'Hossein Pourghadiri',
     description : 'Lorem ipsum dolor sit amet, nam ne liber propriae, vel no vidit nullam volutpat. Ut harum inciderint usu, vivendum invenire est ut. In vix nobis legendos deterruisset. Quas dignissim cum ad. Sea quaestio assentior ut, ad eum idque regione salutatus. Inani splendide scripserit et nec. Et has aperiam civibus.',
+    latitude: 37.13,
+    longitude: 49.14,
   },
   {
     id: 3,
@@ -25,6 +29,8 @@ const rows = [
     title : 'Best View',
     username: 'Hossein Pourghadiri',
     description : 'Lorem ipsum dolor sit amet, nam ne liber propriae, vel no vidit nullam volutpat. Ut harum inciderint usu, vivendum invenire est ut. In vix nobis legendos deterruisset. Quas dignissim cum ad. Sea quaestio assentior ut, ad eum idque regione salutatus. Inani splendide scripserit et nec. Et has aperiam civibus.',
+    latitude: 37.20,
+    longitude: 49.20,
   },
 ];
 

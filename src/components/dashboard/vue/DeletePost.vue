@@ -1,5 +1,6 @@
 <script setup lang="ts">
-  import { defineProps, defineEmits } from 'vue';
+  import { defineProps, defineEmits, ref } from 'vue';
+  import MapView from 'src/components/map/mapView.vue';
 
   const props = defineProps({
     modelValue: {
@@ -20,9 +21,22 @@
     description: {
       default: 'No Description'
     },
+    latitude: {
+      default: 37.28
+    },
+    longitude: {
+      default: 49.6
+    },
   });
 
+  const tab = ref('image');
+  const changeTab = () => {
+    if(tab.value == 'image')
+      tab.value = 'map';
+    else
+      tab.value = 'image';
 
+  }
   const emit = defineEmits(['update:model-value']);
 
   const close = () => {
@@ -37,7 +51,19 @@
 
   <q-dialog :model-value="modelValue" persistent>
     <q-card class="my-card" style="min-width: 350px;">
-      <q-img :src="props.img" fit="cover"/>
+      <q-tab-panels v-model="tab" animated class="full-width">
+        <q-tab-panel name="image">
+          <q-img :src="img" :fit="'cover'"/>
+        </q-tab-panel>
+
+        <q-tab-panel name="map">
+          <map-view
+          :latitude="latitude"
+          :longitude="longitude"
+          :state="'delete'"
+          ></map-view>
+        </q-tab-panel>
+      </q-tab-panels>
       <q-card-section>
         <q-btn
           fab
@@ -45,10 +71,11 @@
           icon="place"
           class="absolute"
           style="top: 0; right: 12px; transform: translateY(-50%);"
+          @click="changeTab()"
         />
         <div class="row no-wrap items-center">
           <div class="col text-h6 ellipsis">
-            {{ props.title }}
+            {{ title }}
           </div>
         </div>
       </q-card-section>

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
   import { defineProps, defineEmits, ref } from 'vue';
+  import MapView from 'src/components/map/mapView.vue';
 
   const props = defineProps({
     modelValue: {
@@ -22,6 +23,8 @@
     title: '',
     description: '',
     image: undefined,
+    latitude: <number> 37.28,
+    longitude: <number> 49.6,
   })
 
   const emit = defineEmits(['update:model-value']);
@@ -61,6 +64,11 @@
           </template>
         </q-file>
       </q-card-section>
+      <map-view
+      v-model:latitude="createPostParameter.latitude"
+      v-model:longitude="createPostParameter.longitude"
+      :state="'update'"
+      ></map-view>
       <q-card-actions align="right" class="text-primary">
         <q-btn color="red" icon-right="close" label="Cancel" @click="close"/>
         <q-btn color="light-blue-8" icon-right="create" label="Create" @click="accepted"/>

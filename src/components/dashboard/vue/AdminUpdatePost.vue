@@ -1,5 +1,7 @@
 <script setup lang="ts">
   import { defineProps, defineEmits, ref, watch } from 'vue';
+  import MapView from 'src/components/map/mapView.vue';
+
 
   const props = defineProps({
     modelValue: {
@@ -14,12 +16,20 @@
     description: {
       default: 'No Description'
     },
+    latitude: {
+      default: 37.28
+    },
+    longitude: {
+      default: 49.6
+    },
   });
 
   const updatePostParameter = ref({
     title: '',
     description: '',
     image: undefined,
+    latitude: <number> 37.28,
+    longitude: <number> 49.6,
   })
 
   watch(props, () => {
@@ -27,6 +37,8 @@
       title: props.title,
       description: props.description,
       image: updatePostParameter.value.image,
+      latitude: props.latitude,
+      longitude: props.longitude,
     }
   })
 
@@ -66,6 +78,11 @@
           </template>
         </q-file>
       </q-card-section>
+      <map-view
+      v-model:latitude="updatePostParameter.latitude"
+      v-model:longitude="updatePostParameter.longitude"
+      :state="'update'"
+      ></map-view>
       <q-card-actions align="right" class="text-primary">
         <q-btn color="red" icon-right="close" label="Cancel" @click="close"/>
         <q-btn color="light-blue-8" icon-right="update" label="Update" @click="accepted"/>

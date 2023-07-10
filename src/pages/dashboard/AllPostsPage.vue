@@ -52,6 +52,8 @@
   :id="updatePostParameter.id"
   :title="updatePostParameter.title"
   :description="updatePostParameter.description"
+  :latitude="updatePostParameter.latitude"
+  :longitude="updatePostParameter.longitude"
   ></admin-update-post>
   <admin-delete-post
   v-model:model-value="deletePostDialog"
@@ -60,6 +62,8 @@
   :title="deletePostParameter.title"
   :username="deletePostParameter.username"
   :description="deletePostParameter.description"
+  :latitude="deletePostParameter.latitude"
+  :longitude="deletePostParameter.longitude"
   ></admin-delete-post>
 </template>
 
@@ -73,7 +77,9 @@
   const updatePostParameter = ref({
     id: <number>0,
     title: <string> '',
-    description: <string> ''
+    description: <string> '',
+    latitude: <number> 0,
+    longitude: <number> 0,
   });
   const deletePostParameter = ref({
     id: <number>0,
@@ -81,12 +87,16 @@
     title: <string> '',
     username: <string> '',
     description: <string> '',
+    latitude: <number> 0,
+    longitude: <number> 0,
   });
   const updatePostDialog = ref(false);
   const updatePostFunction = (row: any) => {
     updatePostParameter.value.id = row.id;
     updatePostParameter.value.title = row.title;
     updatePostParameter.value.description = row.description;
+    updatePostParameter.value.latitude = row.latitude;
+    updatePostParameter.value.longitude = row.longitude;
     updatePostDialog.value = true;
   };
   const deletePostDialog = ref(false);
@@ -96,6 +106,8 @@
     deletePostParameter.value.title = row.title;
     deletePostParameter.value.username = row.username;
     deletePostParameter.value.description = row.description;
+    deletePostParameter.value.latitude = row.latitude;
+    deletePostParameter.value.longitude = row.longitude;
     deletePostDialog.value = true;
   };
 </script>

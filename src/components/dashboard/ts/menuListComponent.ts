@@ -2,7 +2,6 @@ import{ mdiHome, mdiNote, mdiNoteMultiple, mdiAccountGroup} from '@quasar/extras
 
 type menuItem = {name: string, route: string, icon: string};
 
-
 function menu() {
   return [
     { name: 'Dashboard', route: 'dashboard', icon: mdiHome },
