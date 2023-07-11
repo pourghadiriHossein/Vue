@@ -1,148 +1,107 @@
-# Create Primary data in server side
+# Develop Server Side, Write Necessary Function in Controller
 
-## Create Enum Folder in app Folder
-- ### Create Permissions.php File
+## In server/Http/Controllers, Update Controller.php File
+- ### Add Paginated Success Response Function
 ```bash
-<?php
-
-namespace App\Enum;
-
-final class Permissions {
-    public const VIEW_MY_PROFILE = 'view my profile';
-    public const UPDATE_MY_ACCOUNT = 'update my account';
-
-    public const VIEW_ANY_POST = 'view any post';
-    public const LIKE_ANY_POST = 'like any post';
-
-    public const CREATE_NEW_POST = 'create new post';
-    public const UPDATE_MY_POST = 'update my post';
-    public const DELETE_MY_POST = 'delete my post';
-
-    public const UPDATE_ANY_POST = 'update any post';
-    public const DELETE_ANY_POST = 'delete any post';
-
-    public const VIEW_ANY_ACCOUNT = 'view any account';
-    public const CREATE_ANY_ACCOUNT = 'create any account';
-    public const UPDATE_ANY_ACCOUNT = 'update any account';
-    public const DELETE_ANY_ACCOUNT = 'delete any account';
+function paginatedSuccessResponse($data, $name) {
+    return response()->json(
+        [
+            'status' => 'success',
+            $name => $data->items(),
+            'meta' => [
+                'pagination' => [
+                    $name => [
+                        'last_item' => $data->lastItem(),
+                        'first_item' => $data->firstItem(),
+                        'last_page' => $data->lastPage(),
+                        'per_page' => $data->perPage(),
+                        'current_page' => $data->currentPage(),
+                        'total' => $data->total()
+                    ]
+                ]
+            ]
+        ]
+    );
 }
 ```
-- ### Create Roles.php File
+- ### Add Success Response Function
 ```bash
-<?php
+function successResponse($data = [], $code = 200) {
+    return response()->json(
+        array_merge([
+            'message' => 'Your Request Successed',
+        ], $data),
+        $code
+    );
+}
+```
+- ### Add Fail Response Function
+```bash
+function failResponse($data = [], $code = 504) {
+    return response()->json(
+        array_merge([
+            'message' => 'Your Request Failed',
+        ], $data),
+        $code
+    );
+}
+```
+- ### Add Delete Media Function
+```bash
+function deleteMedia($media) {
+    if($media) {
+        foreach ($media as $file) {
+            File::delete($file->url);
+            $file->delete();
+        }
+    }
+    return back();
+}
+```
+- ### Add Store Post Media Function
+```bash
+function storePostMedia($file, $model_id , $user_id) {
+    $post = Post::where('id', $model_id)->with('media')->first();
+    if (isset($post->media)) {
+        $this->deleteMedia($post->media);
+    }
+    $name = Carbon::now()->getTimestamp().'.'.$file->extension();
+    $file->storePubliclyAs('public/media/', $name);
+    $media = new Media([
+        'size' => $file->getSize(),
+        'mime_type' => $file->getMimeType(),
+        'url' => 'storage/media/'.$name
+    ]);
+    $media->user()->associate($user_id);
+    $media->save();
 
-namespace App\Enum;
+    $post = Post::find($model_id);
+    $post->media()->sync($media, [ 'create_at' => Carbon::now() ]);
+    $post->save();
+    return back();
+}
+```
+- ### Add Store User Avatar Function
+```bash
+function storeUserAvatar($file, $model_id) {
+    $user = User::where('id', $model_id)->with('media')->first();
+    if (isset($user->media)) {
+        $this->deleteMedia($user->media);
+    }
+    $name = Carbon::now()->getTimestamp().'.'.$file->extension();
+    $file->storePubliclyAs('public/media/', $name);
+    $media = new Media([
+        'size' => $file->getSize(),
+        'mime_type' => $file->getMimeType(),
+        'url' => 'storage/media/'.$name
+    ]);
+    $media->user()->associate($model_id);
+    $media->save();
 
-final class Roles {
-    public const ADMIN = 'admin';
-    public const USER = 'user';
+    $user = User::find($model_id);
+    $user->media()->sync($media, [ 'create_at' => Carbon::now()]);
+    $user->save();
+    return back();
 }
 ```
 
-## Seeder Part
-- ### OauthClinetSeeder Command
-```bash
-php artisan make:seeder OauthClinetSeeder
-```
-- ### OauthClinetSeeder run function
-```bash
-Client::create([
-    'name' => 'Web Client',
-    'id' => env('AUTH_WEB_CLIENT_ID',1),
-    'secret' => env('AUTH_WEB_CLIENT_SECRET'),
-    'redirect' => 'localhost:8000',
-    'provider' => 'users',
-    'personal_access_client' => 0,
-    'password_client' => 1,
-    'revoked' => 0,
-]);
-```
-- ### PermissionSeeder Command
-```bash
-php artisan make:seeder PermissionSeeder
-```
-- ### PermissionSeeder run function
-```bash
-public function run(): void
-{
-    $admin = Role::create(['name' => Roles::ADMIN, 'guard_name' => 'api']);
-    $user = Role::create(['name' => Roles::USER, 'guard_name' => 'api']);
-
-    Permission::create(['name' => Permissions::VIEW_MY_PROFILE, 'guard_name' => 'api']);
-    Permission::create(['name' => Permissions::UPDATE_MY_ACCOUNT, 'guard_name' => 'api']);
-
-    Permission::create(['name' => Permissions::VIEW_ANY_POST, 'guard_name' => 'api']);
-    Permission::create(['name' => Permissions::LIKE_ANY_POST, 'guard_name' => 'api']);
-
-    Permission::create(['name' => Permissions::CREATE_NEW_POST, 'guard_name' => 'api']);
-    Permission::create(['name' => Permissions::UPDATE_MY_POST, 'guard_name' => 'api']);
-    Permission::create(['name' => Permissions::DELETE_MY_POST, 'guard_name' => 'api']);
-
-    Permission::create(['name' => Permissions::UPDATE_ANY_POST, 'guard_name' => 'api']);
-    Permission::create(['name' => Permissions::DELETE_ANY_POST, 'guard_name' => 'api']);
-
-    Permission::create(['name' => Permissions::VIEW_ANY_ACCOUNT, 'guard_name' => 'api']);
-    Permission::create(['name' => Permissions::CREATE_ANY_ACCOUNT, 'guard_name' => 'api']);
-    Permission::create(['name' => Permissions::UPDATE_ANY_ACCOUNT, 'guard_name' => 'api']);
-    Permission::create(['name' => Permissions::DELETE_ANY_ACCOUNT, 'guard_name' => 'api']);
-
-    $admin->givePermissionTo(Permissions::VIEW_MY_PROFILE);
-    $admin->givePermissionTo(Permissions::UPDATE_MY_ACCOUNT);
-
-    $admin->givePermissionTo(Permissions::VIEW_ANY_POST);
-    $admin->givePermissionTo(Permissions::LIKE_ANY_POST);
-
-    $admin->givePermissionTo(Permissions::CREATE_NEW_POST);
-    $admin->givePermissionTo(Permissions::UPDATE_MY_POST);
-    $admin->givePermissionTo(Permissions::DELETE_MY_POST);
-
-    $admin->givePermissionTo(Permissions::UPDATE_ANY_POST);
-    $admin->givePermissionTo(Permissions::DELETE_ANY_POST);
-
-    $admin->givePermissionTo(Permissions::VIEW_ANY_ACCOUNT);
-    $admin->givePermissionTo(Permissions::CREATE_ANY_ACCOUNT);
-    $admin->givePermissionTo(Permissions::UPDATE_ANY_ACCOUNT);
-    $admin->givePermissionTo(Permissions::DELETE_ANY_ACCOUNT);
-
-    $user->givePermissionTo(Permissions::VIEW_MY_PROFILE);
-    $user->givePermissionTo(Permissions::UPDATE_MY_ACCOUNT);
-
-    $user->givePermissionTo(Permissions::VIEW_ANY_POST);
-    $user->givePermissionTo(Permissions::LIKE_ANY_POST);
-
-    $user->givePermissionTo(Permissions::CREATE_NEW_POST);
-    $user->givePermissionTo(Permissions::UPDATE_MY_POST);
-    $user->givePermissionTo(Permissions::DELETE_MY_POST);
-}
-```
-- ### UserSeeder Command
-```bash
-php artisan make:seeder UserSeeder
-```
-- ### UserSeeder run function
-```bash
-$user = User::create([
-    'name' => 'حسین پورقدیری',
-    'email' => 'hossein.654321@yahoo.com',
-    'password' => Hash::make('123456')
-]);
-$user->assignRole(Role::findByName(Roles::ADMIN, 'api'));
-```
-## Update config/cors.php file
-```bash
-'paths' => ['api/*', 'sanctum/csrf-cookie', 'oauth/token'],
-
-'allowed_methods' => ['*'],
-
-'allowed_origins' => ['*'],
-
-'allowed_origins_patterns' => [],
-
-'allowed_headers' => ['*'],
-
-'exposed_headers' => [],
-
-'max_age' => 0,
-
-'supports_credentials' => true,
-```
