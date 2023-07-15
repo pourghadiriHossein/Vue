@@ -1,5 +1,6 @@
 <?php
 
+use App\Enum\Permissions;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
