@@ -1,437 +1,366 @@
-# Develop Client Side, Use maplibre package
+# Develop Client Side, Create Register and Update Profile Mechanism
 
-## Install maplibre package Command
+## Create models Folder
+
+- ### Create types.ts File
+
 ```bash
-npm install maplibre-gl
-```
-## <a href="https://cloud.maptiler.com/">Create new account in maptiler web site</a>
-
-## Create map Folder in components, then Create mapView.vue File
-```bash
-<script lang="ts" setup>
-import { defineProps, defineEmits, ref, onMounted } from 'vue';
-import { Ref } from 'vue';
-import maplibregl from 'maplibre-gl';
-
-const props = defineProps({
-  latitude: {
-    default: <number> 37.28
-  },
-  longitude: {
-    default: <number> 49.6
-  },
-  state: {
-    default: <string> 'update'
-  }
-});
-const latlong = ref({
-  lat: <number> 37.28,
-  long: <number> 49.6
-});
-const emit = defineEmits(['update:latitude', 'update:longitude']);
-
-function createMapObject( mapRef: Ref, defaultCoordinated: maplibregl.LngLatLike = [props.longitude, props.latitude]) {
-  const mapObject = new maplibregl.Map({
-    container: mapRef.value,
-    style: 'https://api.maptiler.com/maps/basic-v2/style.json?key=0FJnvcFKNy5Bx3rGMA6R', // stylesheet location
-    center: defaultCoordinated, // starting position [lng, lat]
-    zoom:9, // starting zoom
-  });
-  mapObject.addControl(new maplibregl.NavigationControl({}));
-  return mapObject;
-}
-
-function createMarker(coordinates: maplibregl.LngLatLike) {
-  if(props.state == 'update'){
-      const marker = new maplibregl.Marker({
-      color: '#000000',
-      draggable: true
-    }).setLngLat(coordinates);
-    return marker;
-  }else{
-      const marker = new maplibregl.Marker({
-      color: '#000000',
-      draggable: false
-    }).setLngLat(coordinates);
-    return marker;
-  }
-}
-
-const mapRef = ref();
-onMounted(() => {
-  const map = createMapObject(mapRef);
-  const marker = createMarker([ props.longitude, props.latitude ]);
-  marker.addTo(map);
-  const onDragEnd = () => {
-    const lngLat = marker.getLngLat();
-    latlong.value.lat = lngLat.lat;
-    latlong.value.long = lngLat.lng;
-    emit.call(this, 'update:latitude', latlong.value.lat);
-    emit.call(this, 'update:longitude', latlong.value.long);
+export class FetchResponse<model> {
+  meta?: {
+    pagination?: {
+      [key: string]: {
+        per_page?: number;
+        total?: number;
+        first_item?: number;
+        last_item?: number;
+        last_page?: number;
+        current_page?: number;
+      };
+    };
   };
-  marker.on('dragend', onDragEnd);
-});
-</script>
-
-<template>
-  <div ref="mapRef" class="map"></div>
-</template>
-
-<style>
-@import 'https://unpkg.com/maplibre-gl@2.1.9/dist/maplibre-gl.css';
-
-.map {
-  height: 200px;
-}
-</style>
-```
-## In components/dashboard/ts Folder
-- ### Update dashboardComponent.ts File, add latitude and longitude to posts
-```bash
-latitude: 37.27,
-longitude: 49.53,
-```
-- ### Update myPostsComponent.ts File, add latitude and longitude to rows
-```bash
-latitude: 37.27,
-longitude: 49.53,
-```
-- ### Update allPostsComponent.ts File, add latitude and longitude to rows
-```bash
-latitude: 37.27,
-longitude: 49.53,
-```
-## In components/dashboard/vue Folder, Update AdminDeletePost.vue File
-- ### import map to component
-```bash
-import MapView from 'src/components/map/mapView.vue';
-```
-- ### add latitude and longitude to props
-```bash
-latitude: {
-      default: 37.28
-},
-longitude: {
-  default: 49.6
-},
-```
-- ### write tab mechanism in script
-```bash
-const tab = ref('image');
-const changeTab = () => {
-  if(tab.value == 'image')
-    tab.value = 'map';
-  else
-    tab.value = 'image';
+  [key: string]: Array<model>;
 }
 ```
-- ### write tab mechanism and use map component in template
-```bash
-<q-tab-panels v-model="tab" animated class="full-width">
-  <q-tab-panel name="image">
-    <q-img :src="img" :fit="'cover'"/>
-  </q-tab-panel>
 
-  <q-tab-panel name="map">
-    <map-view
-    :latitude="latitude"
-    :longitude="longitude"
-    :state="'delete'"
-    ></map-view>
-  </q-tab-panel>
-</q-tab-panels>
-<q-card-section>
-  <q-btn
-    fab
-    color="primary"
-    icon="place"
-    class="absolute"
-    style="top: 0; right: 12px; transform: translateY(-50%);"
-    @click="changeTab()"
-  />
-  <div class="row no-wrap items-center">
-    <div class="col text-h6 ellipsis">
-      {{ title }}
-    </div>
-  </div>
-</q-card-section>
-```
-## In components/dashboard/vue Folder, Update AdminUpdatePost.vue File
-- ### import map to component
-```bash
-import MapView from 'src/components/map/mapView.vue';
-```
-- ### add latitude and longitude to props
-```bash
-latitude: {
-      default: 37.28
-},
-longitude: {
-  default: 49.6
-},
-```
-- ### add latitude and longitude to updatePostParameter and watch in script
-```bash
-const updatePostParameter = ref({
-  title: '',
-  description: '',
-  image: undefined,
-  latitude: <number> 37.28,
-  longitude: <number> 49.6,
-})
+- ### Create post.ts File
 
-watch(props, () => {
-  updatePostParameter.value = {
-    title: props.title,
-    description: props.description,
-    image: updatePostParameter.value.image,
-    latitude: props.latitude,
-    longitude: props.longitude,
+```bash
+export class Post {
+  id: number;
+  name: string;
+  title: string;
+  description: string;
+  image: string;
+  upVoteCount: number;
+  latitude: number;
+  longitude: number;
+
+  constructor(
+    id: number,
+    name?: string,
+    title?: string,
+    description?: string,
+    image?: string,
+    upVoteCount?: number,
+    latitude?: number,
+    longitude?: number
+  ) {
+    this.id = id;
+    this.name = name ?? '';
+    this.title = title ?? '';
+    this.description = description ?? '';
+    this.image = image ?? '';
+    this.upVoteCount = upVoteCount ?? 0;
+    this.latitude = latitude ?? 37.27;
+    this.longitude = longitude ?? 49.53;
   }
-})
-```
-- ### add map component in template
-```bash
-<map-view
-v-model:latitude="updatePostParameter.latitude"
-v-model:longitude="updatePostParameter.longitude"
-:state="'update'"
-></map-view>
-```
-## In components/dashboard/vue Folder, Update CreatePost.vue File
-- ### import map to component
-```bash
-import MapView from 'src/components/map/mapView.vue';
-```
-- ### add latitude and longitude to createPostParameter in script
-```bash
-const createPostParameter = ref({
-  title: '',
-  description: '',
-  image: undefined,
-  latitude: <number> 37.28,
-  longitude: <number> 49.6,
-})
-```
-- ### add map component in template
-```bash
-<map-view
-v-model:latitude="createPostParameter.latitude"
-v-model:longitude="createPostParameter.longitude"
-:state="'update'"
-></map-view>
-```
-## In components/dashboard/vue Folder, Update DeletePost.vue File
-- ### import map to component
-```bash
-import MapView from 'src/components/map/mapView.vue';
-```
-- ### add latitude and longitude to props
-```bash
-latitude: {
-      default: 37.28
-},
-longitude: {
-  default: 49.6
-},
-```
-- ### write tab mechanism in script
-```bash
-const tab = ref('image');
-const changeTab = () => {
-  if(tab.value == 'image')
-    tab.value = 'map';
-  else
-    tab.value = 'image';
 }
 ```
-- ### write tab mechanism and use map component in template
-```bash
-<q-tab-panels v-model="tab" animated class="full-width">
-  <q-tab-panel name="image">
-    <q-img :src="img" :fit="'cover'"/>
-  </q-tab-panel>
 
-  <q-tab-panel name="map">
-    <map-view
-    :latitude="latitude"
-    :longitude="longitude"
-    :state="'delete'"
-    ></map-view>
-  </q-tab-panel>
-</q-tab-panels>
-<q-card-section>
-  <q-btn
-    fab
-    color="primary"
-    icon="place"
-    class="absolute"
-    style="top: 0; right: 12px; transform: translateY(-50%);"
-    @click="changeTab()"
-  />
-  <div class="row no-wrap items-center">
-    <div class="col text-h6 ellipsis">
-      {{ title }}
-    </div>
-  </div>
-</q-card-section>
-```
-## In components/dashboard/vue Folder, Update UpdatePost.vue File
-- ### import map to component
-```bash
-import MapView from 'src/components/map/mapView.vue';
-```
-- ### add latitude and longitude to props
-```bash
-latitude: {
-      default: 37.28
-},
-longitude: {
-  default: 49.6
-},
-```
-- ### add latitude and longitude to updatePostParameter and watch in script
-```bash
-const updatePostParameter = ref({
-  title: '',
-  description: '',
-  image: undefined,
-  latitude: <number> 37.28,
-  longitude: <number> 49.6,
-})
+- ### Create user.ts File
 
-watch(props, () => {
-  updatePostParameter.value = {
-    title: props.title,
-    description: props.description,
-    image: updatePostParameter.value.image,
-    latitude: props.latitude,
-    longitude: props.longitude,
+```bash
+export class User {
+  id: number;
+  username: string;
+  email: string;
+  avatar: string;
+  password: string;
+
+  constructor(
+    id: number,
+    username?: string,
+    email?: string,
+    avatar?: string,
+    password?: string
+  ) {
+    this.id = id;
+    this.username = username ?? '';
+    this.email = email ?? '';
+    this.avatar = avatar ?? '';
+    this.password = password ?? '';
   }
-})
-```
-- ### add map component in template
-```bash
-<map-view
-v-model:latitude="updatePostParameter.latitude"
-v-model:longitude="updatePostParameter.longitude"
-:state="'update'"
-></map-view>
-```
-## In pages/dashboard Folder, Update AllPostsPage.vue File
-- ### Add latitude and longitude to updatePostParameter and deletePostParameter in script
-```bash
-latitude: <number> 0,
-longitude: <number> 0,
-```
-- ### Add latitude and longitude to updatePostFunction and deletePostFunction in script
-```bash
-updatePostParameter.value.latitude = row.latitude;
-updatePostParameter.value.longitude = row.longitude;
-```
-```bash
-deletePostParameter.value.latitude = row.latitude;
-deletePostParameter.value.longitude = row.longitude;
-```
-- ### Add latitude and longitude to AdminUpdatePost component and AdminDeletePost component in template
-```bash
-:latitude="updatePostParameter.latitude"
-:longitude="updatePostParameter.longitude"
-```
-```bash
-:latitude="deletePostParameter.latitude"
-:longitude="deletePostParameter.longitude"
+}
 ```
 
-
-## In pages/dashboard Folder, Update DashboardPage.vue File
-- ### import map component and vue in script
 ```bash
-import MapView from 'src/components/map/mapView.vue';
+import { api } from 'src/boot/axios';
+import { AxiosResponse } from 'axios';
+```
+
+```bash
+static async register(
+  username: string,
+  email: string,
+  password: string,
+  avatar: File
+) {
+  const data = new FormData();
+  data.append('name', username);
+  data.append('email', email);
+  data.append('password', password);
+  data.append('avatar', avatar);
+  const response = await api.post<AxiosResponse>('api/register', data);
+  if (response.status == 200) {
+    return response;
+  }
+  throw Error('Register Failed');
+}
+```
+
+```bash
+static async profile() {
+  const response = await api.get('api/user/profile', {});
+  if (response.status == 200) {
+    return response;
+  }
+  throw Error('Profile failed');
+}
+```
+
+```bash
+static async updateProfile(
+  id: number,
+  username: string,
+  email: string,
+  password: string,
+  avatar: File
+) {
+  const data = new FormData();
+  data.append('name', username);
+  data.append('email', email);
+  data.append('password', password);
+  data.append('avatar', avatar);
+  const response = await api.post<AxiosResponse>(
+    `api/update-my-profile/${id}`,
+    data
+  );
+  if (response.status == 200) {
+    return response;
+  }
+  throw Error('Update Failed');
+}
+```
+## In components/dashboard/ts Folder, Update profileComponent.ts File
+```bash
 import { ref } from 'vue';
-```
-- ### Add Primary Function For Full Size Map in script
-```bash
-const mapVariable = ref({
-  lat : <number> 0,
-  long : <number> 0,
-  state : <string> 'view',
-});
-const fullMapView = ref(false);
-const fullMap = (lat: number, long:number) => {
-  mapVariable.value.lat = lat;
-  mapVariable.value.long = long;
-  fullMapView.value = true;
+import { User } from 'src/models/user'
+
+const serverRoute = 'http://127.0.0.1:8000/';
+
+const userData =  () => {
+  User.profile()
+  .then(
+    (value) => {
+      profile.value.id = value.data.user.id;
+      profile.value.username = value.data.user.name;
+      profile.value.email = value.data.user.email;
+      if(value.data.user.media[0]?.url){
+        profile.value.avatar = serverRoute + value.data.user.media[0]?.url;
+      }
+    }
+  )
 }
-const maximizedToggle = ref(true);
+userData();
+
+export const profile = ref({
+  id: 0,
+  username: '',
+  email: '',
+  avatar: 'src/image/avatar.png',
+  newAvatar: undefined,
+  password: '',
+})
 ```
-- ### Update first q-card-section tag for card in template
+## In pages/login Folder, Update RegisterPage.vue File
+- ### In script, import User model
 ```bash
-<q-card-section>
-  <q-btn
-    fab
-    color="light-blue-8"
-    icon="place"
-    class="absolute"
-    style="top: 0; right: 12px; transform: translateY(-50%);"
-    @click="fullMap(post.latitude, post.longitude)"
-  />
-  <div class="row no-wrap items-center">
-    <div class="col text-h6 ellipsis">
-      {{ post.title }}
-    </div>
-    <div class="col-auto text-grey text-caption q-pt-md row no-wrap items-center">
-    </div>
-  </div>
+import { User } from 'src/models/user';
+```
+- ### In script, write the valdiation script before return
+```bash
+const hidden = ref(true);
+const errorMessage = ref({
+  error: [],
+  state: '',
+});
+const dangerErrorState = 'bg-red q-pa-sm text-white';
+const successErrorState = 'bg-green q-pa-sm text-white';
+```
+- ### In script, write the valdiation script and register function in return
+```bash
+hidden,
+errorMessage,
+dangerErrorState,
+successErrorState,
+closeErrorPart() {
+  hidden.value = true;
+},
+register() {
+  User.register(
+    newUser.value.name,
+    newUser.value.email,
+    newUser.value.password,
+    newUser.value.avatar
+  ).then(
+    (response) => {
+      if (response.status == 200) {
+        if (response.data.errors) {
+          errorMessage.value.error = response.data.errors;
+          errorMessage.value.state = successErrorState;
+          hidden.value = false;
+          setTimeout(() => {
+            router.replace({ name: 'login' });
+          }, 2000);
+        }
+      }
+    },
+    (reject) => {
+      if (reject.response.status != 200) {
+        if (reject.response.data.errors) {
+          errorMessage.value.error = reject.response.data.errors;
+          errorMessage.value.state = dangerErrorState;
+          hidden.value = false;
+        }
+      }
+    }
+  );
+},
+```
+- ### In template, write the valdiation template for error show
+```bash
+<q-card-section class="q-pt-none">
+  <q-list :class="errorMessage.state" :hidden="hidden">
+    <q-item>
+      <q-btn
+        size="sm"
+        color="trasparent"
+        dense
+        icon="close"
+        @click="closeErrorPart()"
+      ></q-btn>
+    </q-item>
+    <q-separator inset dark />
+    <q-item v-for="item in errorMessage.error" :key="item">
+      <q-item-section>
+        {{ item[0] }}
+      </q-item-section>
+    </q-item>
+  </q-list>
 </q-card-section>
 ```
-- ### add dialog box for full map view in template
+- ### In template, write click event on register btn
 ```bash
-<q-dialog
-  v-model="fullMapView"
-  persistent
-  :maximized="maximizedToggle"
-  transition-show="slide-up"
-  transition-hide="slide-down"
->
-  <q-card class="bg-primary text-white">
-    <q-bar>
-      <q-space />
-      <q-btn dense flat icon="close" v-close-popup>
-        <q-tooltip class="bg-white text-primary">Close</q-tooltip>
-      </q-btn>
-    </q-bar>
-
-    <map-view class="full-width full-height"
-    :latitude="mapVariable.lat"
-    :longitude="mapVariable.long"
-    ></map-view>
-  </q-card>
-</q-dialog>
+<q-btn @click="register" unelevated color="light-blue-8" size="lg" class="full-width" label="Register"/>
 ```
 
-## In pages/dashboard Folder, Update MyPostsPage.vue File
-- ### Add latitude and longitude to updatePostParameter and deletePostParameter in script
+## In components/dashboard/ts, Update profileComponent.ts File
 ```bash
-latitude: <number> 0,
-longitude: <number> 0,
+import { ref } from 'vue';
+import { User } from 'src/models/user'
+
+const serverRoute = 'http://127.0.0.1:8000/';
+
+const userData =  () => {
+  User.profile()
+  .then(
+    (value) => {
+      profile.value.id = value.data.user.id;
+      profile.value.username = value.data.user.name;
+      profile.value.email = value.data.user.email;
+      if(value.data.user.media[0]?.url){
+        profile.value.avatar = serverRoute + value.data.user.media[0]?.url;
+      }
+    }
+  )
+}
+userData();
+
+export const profile = ref({
+  id: 0,
+  username: '',
+  email: '',
+  avatar: 'src/image/avatar.png',
+  newAvatar: undefined,
+  password: '',
+})
 ```
-- ### Add latitude and longitude to updatePostFunction and deletePostFunction in script
+## In layouts/dashboard, Update DashboardLayout.vue File
+- ### In script, import User model
 ```bash
-updatePostParameter.value.latitude = row.latitude;
-updatePostParameter.value.longitude = row.longitude;
-```
-```bash
-deletePostParameter.value.latitude = row.latitude;
-deletePostParameter.value.longitude = row.longitude;
-```
-- ### Add latitude and longitude to UpdatePost component and DeletePost component in template
-```bash
-:latitude="updatePostParameter.latitude"
-:longitude="updatePostParameter.longitude"
-```
-```bash
-:latitude="deletePostParameter.latitude"
-:longitude="deletePostParameter.longitude"
+import { User } from 'src/models/user';
 ```
 
+- ### In script, write the valdiation script before return
+```bash
+const hidden = ref(true);
+const errorMessage = ref({
+  error: [],
+  state: '',
+});
+const dangerErrorState = 'bg-red q-pa-sm text-white';
+const successErrorState = 'bg-green q-pa-sm text-white';
+```
+- ### In script, write the valdiation script and update profile function in return
+```bash
+hidden,
+errorMessage,
+closeErrorPart() {
+  hidden.value = !hidden.value;
+},
+update() {
+  User.updateProfile(
+    profile.value.id,
+    profile.value.username,
+    profile.value.email,
+    profile.value.password,
+    profile.value.newAvatar,
+  )
+  .then(
+    (response) => {
+      if(response.status == 200){
+        if(response.data.errors) {
+          errorMessage.value.error = response.data.errors;
+          errorMessage.value.state = successErrorState;
+          hidden.value = false;
+        }
+      }
+    },
+    (reject) => {
+      if(reject.response.status != 200){
+        if(reject.response.data.errors) {
+          errorMessage.value.error = reject.response.data.errors;
+          errorMessage.value.state = dangerErrorState;
+          hidden.value = false;
+        }
+      }
+    }
+  )
+}
+```
+- ### In template, write the valdiation template for error show in update profile dialog
+```bash
+<q-card-section class="q-pt-none">
+  <q-list :class="errorMessage.state" :hidden="hidden">
+    <q-item>
+      <q-btn
+        size="sm"
+        color="trasparent"
+        dense
+        icon="close"
+        @click="closeErrorPart()"
+      ></q-btn>
+    </q-item>
+    <q-separator inset dark />
+    <q-item v-for="item in errorMessage.error" :key="item">
+      <q-item-section>
+        {{ item[0] }}
+      </q-item-section>
+    </q-item>
+  </q-list>
+</q-card-section>
+```
+- ### In template, write click event on submit btn in dialog
+```bash
+<q-btn flat label="Submit" @click="update()"/>
+```
