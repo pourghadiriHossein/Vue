@@ -156,6 +156,11 @@ class UserController extends Controller
                 'email' => $data['email'],
             ]);
         }
+        if ($user->roles){
+            foreach($user->roles as $userRole){
+                $userRole->delete();
+            }
+        }
         if  ($request->input('role') === 'admin'){
             $user->assignRole(Role::findByName(Roles::ADMIN, 'api'));
         }
