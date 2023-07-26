@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -156,11 +157,7 @@ class UserController extends Controller
                 'email' => $data['email'],
             ]);
         }
-        if ($user->roles){
-            foreach($user->roles as $userRole){
-                $userRole->delete();
-            }
-        }
+        DB::table('model_has_roles')->where('model_id',$user->id)->delete();
         if  ($request->input('role') === 'admin'){
             $user->assignRole(Role::findByName(Roles::ADMIN, 'api'));
         }
