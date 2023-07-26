@@ -497,11 +497,7 @@ public function updateUserByAdmin(UpdateUserRequest $request, User $user)
             'email' => $data['email'],
         ]);
     }
-    if ($user->roles){
-        foreach($user->roles as $userRole){
-            $userRole->delete();
-        }
-    }
+    DB::table('model_has_roles')->where('model_id',$user->id)->delete();
     if  ($request->input('role') === 'admin'){
         $user->assignRole(Role::findByName(Roles::ADMIN, 'api'));
     }
