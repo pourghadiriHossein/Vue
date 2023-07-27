@@ -1,207 +1,183 @@
 # Develop Client Side, Create Register and Update Profile Mechanism
 
-## Create models Folder
+## In models, Update user.ts File
 
-- ### Create types.ts File
+- ### import FetchResponse to types model
 
 ```bash
-export class FetchResponse<model> {
-  meta?: {
-    pagination?: {
-      [key: string]: {
-        per_page?: number;
-        total?: number;
-        first_item?: number;
-        last_item?: number;
-        last_page?: number;
-        current_page?: number;
-      };
-    };
-  };
-  [key: string]: Array<model>;
-}
+import { FetchResponse } from 'src/models/types';
 ```
 
-- ### Create post.ts File
+- ### write all user function for admin
 
 ```bash
-export class Post {
-  id: number;
-  name: string;
-  title: string;
-  description: string;
-  image: string;
-  upVoteCount: number;
-  latitude: number;
-  longitude: number;
-
-  constructor(
-    id: number,
-    name?: string,
-    title?: string,
-    description?: string,
-    image?: string,
-    upVoteCount?: number,
-    latitude?: number,
-    longitude?: number
-  ) {
-    this.id = id;
-    this.name = name ?? '';
-    this.title = title ?? '';
-    this.description = description ?? '';
-    this.image = image ?? '';
-    this.upVoteCount = upVoteCount ?? 0;
-    this.latitude = latitude ?? 37.27;
-    this.longitude = longitude ?? 49.53;
+static async allUserForAdmin(page: number) {
+  const response = await api.get<FetchResponse<User>>(
+    `api/all-users?page=${page}`
+  );
+  if (response.status == 200) {
+    return response;
   }
+  throw Error('Get All User For Admin Failed');
 }
 ```
 
-- ### Create user.ts File
+- ### write create user function for admin
 
 ```bash
-export class User {
-  id: number;
-  username: string;
-  email: string;
-  avatar: string;
-  password: string;
-
-  constructor(
-    id: number,
-    username?: string,
-    email?: string,
-    avatar?: string,
-    password?: string
-  ) {
-    this.id = id;
-    this.username = username ?? '';
-    this.email = email ?? '';
-    this.avatar = avatar ?? '';
-    this.password = password ?? '';
-  }
-}
-```
-
-```bash
-import { api } from 'src/boot/axios';
-import { AxiosResponse } from 'axios';
-```
-
-```bash
-static async register(
+static async createUserByAdmin(
   username: string,
   email: string,
   password: string,
-  avatar: File
+  avatar: File,
+  role: string
 ) {
   const data = new FormData();
   data.append('name', username);
   data.append('email', email);
   data.append('password', password);
   data.append('avatar', avatar);
-  const response = await api.post<AxiosResponse>('api/register', data);
-  if (response.status == 200) {
-    return response;
-  }
-  throw Error('Register Failed');
-}
-```
-
-```bash
-static async profile() {
-  const response = await api.get('api/user/profile', {});
-  if (response.status == 200) {
-    return response;
-  }
-  throw Error('Profile failed');
-}
-```
-
-```bash
-static async updateProfile(
-  id: number,
-  username: string,
-  email: string,
-  password: string,
-  avatar: File
-) {
-  const data = new FormData();
-  data.append('name', username);
-  data.append('email', email);
-  data.append('password', password);
-  data.append('avatar', avatar);
+  data.append('role', role);
   const response = await api.post<AxiosResponse>(
-    `api/update-my-profile/${id}`,
+    'api/create-user-by-admin',
     data
   );
   if (response.status == 200) {
     return response;
   }
-  throw Error('Update Failed');
+  throw Error('Created Failed');
 }
 ```
-## In components/dashboard/ts Folder, Update profileComponent.ts File
+
+- ### write update user function for admin
+
 ```bash
-import { ref } from 'vue';
-import { User } from 'src/models/user'
-
-const serverRoute = 'http://127.0.0.1:8000/';
-
-const userData =  () => {
-  User.profile()
-  .then(
-    (value) => {
-      profile.value.id = value.data.user.id;
-      profile.value.username = value.data.user.name;
-      profile.value.email = value.data.user.email;
-      if(value.data.user.media[0]?.url){
-        profile.value.avatar = serverRoute + value.data.user.media[0]?.url;
-      }
-    }
-  )
+static async updateUserByAdmin(
+  id: number,
+  username: string,
+  email: string,
+  password: string,
+  avatar: File,
+  role: string
+) {
+  const data = new FormData();
+  data.append('name', username);
+  data.append('email', email);
+  data.append('password', password);
+  data.append('avatar', avatar);
+  data.append('role', role);
+  const response = await api.post<AxiosResponse>(
+    `api/update-user-by-admin/${id}`,
+    data
+  );
+  if (response.status == 200) {
+    return response;
+  }
+  throw Error('Created Failed');
 }
-userData();
-
-export const profile = ref({
-  id: 0,
-  username: '',
-  email: '',
-  avatar: 'src/image/avatar.png',
-  newAvatar: undefined,
-  password: '',
-})
 ```
-## In pages/login Folder, Update RegisterPage.vue File
-- ### In script, import User model
+
+- ### write delete user function for admin
+
+```bash
+static async deleteUserByAdmin(id: number) {
+  const response = await api.get(`api/delete-user-by-admin/${id}`);
+  if (response.status == 200) {
+    return response;
+  }
+  throw Error('Delete User failed');
+}
+```
+
+## In components/dashboard/ts folder
+
+- ### Update allUsersComponent.ts File
+
+```bash
+import { User } from 'src/models/user';
+import { ref } from 'vue';
+
+const columns: any = [
+  { name: 'id', align: 'left', label: 'ID', field: 'id', sortable: true },
+  { name: 'name', align: 'center', label: 'User Name', field: 'name', sortable: true },
+  { name: 'email', align: 'center', label: 'E-Mail', field: 'email', sortable: true },
+]
+
+const rows = ref();
+
+const pagination = ref({
+  sortBy: 'desc',
+  descending: false,
+  page: 1,
+  rowsPerPage: 5,
+  rowsNumber: 100
+})
+const onRequest = (data: any) => {
+
+  if(!data){
+    User.allUserForAdmin(1)
+    .then(
+      (response) => {
+        rows.value = response.data.users;
+        pagination.value.page = response.data.meta?.pagination?.users.current_page ?? 1;
+        pagination.value.rowsNumber = response.data.meta?.pagination?.users.total ?? 1;
+      }
+      )
+    }
+    else{
+    User.allUserForAdmin(data.pagination.page)
+    .then(
+      (response) => {
+        rows.value = response.data.users;
+        pagination.value.page = response.data.meta?.pagination?.users.current_page ?? 1;
+        pagination.value.rowsNumber = response.data.meta?.pagination?.users.total ?? 1;
+      }
+    )
+  }
+}
+onRequest(null);
+export {columns, rows, pagination, onRequest}
+```
+
+## In components/dashboard/vue folder, Update AdminCreateUser.vue File
+
+- ### import user model
+
 ```bash
 import { User } from 'src/models/user';
 ```
-- ### In script, write the valdiation script before return
+
+- ### add refresh prop to component props
+
+```bash
+refresh: {},
+```
+
+- ### write validation script
+
 ```bash
 const hidden = ref(true);
+const dangerErrorState = 'bg-red q-pa-sm text-white';
+const successErrorState = 'bg-green q-pa-sm text-white';
 const errorMessage = ref({
   error: [],
   state: '',
 });
-const dangerErrorState = 'bg-red q-pa-sm text-white';
-const successErrorState = 'bg-green q-pa-sm text-white';
+const closeErrorPart = () => {
+  hidden.value = !hidden.value;
+};
 ```
-- ### In script, write the valdiation script and register function in return
+
+- ### Update accepted function
+
 ```bash
-hidden,
-errorMessage,
-dangerErrorState,
-successErrorState,
-closeErrorPart() {
-  hidden.value = true;
-},
-register() {
-  User.register(
-    newUser.value.name,
-    newUser.value.email,
-    newUser.value.password,
-    newUser.value.avatar
+const accepted = () => {
+  User.createUserByAdmin(
+    createUserParameter.value.username,
+    createUserParameter.value.email,
+    createUserParameter.value.password,
+    createUserParameter.value.avatar,
+    choice.value
   ).then(
     (response) => {
       if (response.status == 200) {
@@ -209,8 +185,9 @@ register() {
           errorMessage.value.error = response.data.errors;
           errorMessage.value.state = successErrorState;
           hidden.value = false;
+          props.refresh();
           setTimeout(() => {
-            router.replace({ name: 'login' });
+            emit.call(this, 'update:model-value', false);
           }, 2000);
         }
       }
@@ -225,16 +202,18 @@ register() {
       }
     }
   );
-},
+};
 ```
-- ### In template, write the valdiation template for error show
+
+- ### write validation tags in template
+
 ```bash
 <q-card-section class="q-pt-none">
   <q-list :class="errorMessage.state" :hidden="hidden">
     <q-item>
       <q-btn
         size="sm"
-        color="trasparent"
+        color="transparent"
         dense
         icon="close"
         @click="closeErrorPart()"
@@ -249,103 +228,83 @@ register() {
   </q-list>
 </q-card-section>
 ```
-- ### In template, write click event on register btn
-```bash
-<q-btn @click="register" unelevated color="light-blue-8" size="lg" class="full-width" label="Register"/>
-```
 
-## In components/dashboard/ts, Update profileComponent.ts File
-```bash
-import { ref } from 'vue';
-import { User } from 'src/models/user'
+## In components/dashboard/vue folder, Update AdminUpdateUser.vue File
 
-const serverRoute = 'http://127.0.0.1:8000/';
+- ### import user model
 
-const userData =  () => {
-  User.profile()
-  .then(
-    (value) => {
-      profile.value.id = value.data.user.id;
-      profile.value.username = value.data.user.name;
-      profile.value.email = value.data.user.email;
-      if(value.data.user.media[0]?.url){
-        profile.value.avatar = serverRoute + value.data.user.media[0]?.url;
-      }
-    }
-  )
-}
-userData();
-
-export const profile = ref({
-  id: 0,
-  username: '',
-  email: '',
-  avatar: 'src/image/avatar.png',
-  newAvatar: undefined,
-  password: '',
-})
-```
-## In layouts/dashboard, Update DashboardLayout.vue File
-- ### In script, import User model
 ```bash
 import { User } from 'src/models/user';
 ```
 
-- ### In script, write the valdiation script before return
+- ### add refresh prop to component props
+
+```bash
+refresh: {},
+```
+
+- ### write validation script
+
 ```bash
 const hidden = ref(true);
+const dangerErrorState = 'bg-red q-pa-sm text-white';
+const successErrorState = 'bg-green q-pa-sm text-white';
 const errorMessage = ref({
   error: [],
   state: '',
 });
-const dangerErrorState = 'bg-red q-pa-sm text-white';
-const successErrorState = 'bg-green q-pa-sm text-white';
-```
-- ### In script, write the valdiation script and update profile function in return
-```bash
-hidden,
-errorMessage,
-closeErrorPart() {
+const closeErrorPart = () => {
   hidden.value = !hidden.value;
-},
-update() {
-  User.updateProfile(
-    profile.value.id,
-    profile.value.username,
-    profile.value.email,
-    profile.value.password,
-    profile.value.newAvatar,
-  )
-  .then(
+};
+```
+
+- ### Update accepted function
+
+```bash
+const accepted = () => {
+  User.updateUserByAdmin(
+    props.id,
+    updateUserParameter.value.username,
+    updateUserParameter.value.email,
+    updateUserParameter.value.password,
+    updateUserParameter.value.avatar,
+    choice.value
+  ).then(
     (response) => {
-      if(response.status == 200){
-        if(response.data.errors) {
+      if (response.status == 200) {
+        if (response.data.errors) {
           errorMessage.value.error = response.data.errors;
           errorMessage.value.state = successErrorState;
           hidden.value = false;
+          props.refresh();
+          setTimeout(() => {
+            emit.call(this, 'update:model-value', false);
+          }, 2000);
         }
       }
     },
     (reject) => {
-      if(reject.response.status != 200){
-        if(reject.response.data.errors) {
+      if (reject.response.status != 200) {
+        if (reject.response.data.errors) {
           errorMessage.value.error = reject.response.data.errors;
           errorMessage.value.state = dangerErrorState;
           hidden.value = false;
         }
       }
     }
-  )
-}
+  );
+};
 ```
-- ### In template, write the valdiation template for error show in update profile dialog
+
+- ### write validation tags in template
+
 ```bash
 <q-card-section class="q-pt-none">
   <q-list :class="errorMessage.state" :hidden="hidden">
     <q-item>
       <q-btn
         size="sm"
-        color="trasparent"
+        color="transparent"
         dense
         icon="close"
         @click="closeErrorPart()"
@@ -360,7 +319,164 @@ update() {
   </q-list>
 </q-card-section>
 ```
-- ### In template, write click event on submit btn in dialog
+
+## In components/dashboard/vue folder, Update AdminDeleteUser.vue File
+
+- ### import user model
+
 ```bash
-<q-btn flat label="Submit" @click="update()"/>
+import { defineProps, defineEmits, ref } from 'vue';
+import { User } from 'src/models/user';
+```
+
+- ### add refresh prop to component props
+
+```bash
+refresh: {},
+```
+
+- ### write validation script
+
+```bash
+const hidden = ref(true);
+const dangerErrorState = 'bg-red q-pa-sm text-white';
+const successErrorState = 'bg-green q-pa-sm text-white';
+const errorMessage = ref({
+  error: [],
+  state: '',
+});
+const closeErrorPart = () => {
+  hidden.value = !hidden.value;
+};
+```
+
+- ### Update accepted function
+
+```bash
+const accepted = () => {
+  User.deleteUserByAdmin(props.id).then(
+    (response) => {
+      if (response.status == 200) {
+        if (response.data.errors) {
+          errorMessage.value.error = response.data.errors;
+          errorMessage.value.state = successErrorState;
+          hidden.value = false;
+          props.refresh();
+          setTimeout(() => {
+            emit.call(this, 'update:model-value', false);
+          }, 2000);
+        }
+      }
+    },
+    (reject) => {
+      if (reject.response.status != 200) {
+        if (reject.response.data.errors) {
+          errorMessage.value.error = reject.response.data.errors;
+          errorMessage.value.state = dangerErrorState;
+          hidden.value = false;
+        }
+      }
+    }
+  );
+};
+```
+
+- ### write validation tags in template
+
+```bash
+<q-card-section>
+  <q-list :class="errorMessage.state" :hidden="hidden">
+    <q-item>
+      <q-btn
+        size="sm"
+        color="transparent"
+        dense
+        icon="close"
+        @click="closeErrorPart()"
+      ></q-btn>
+    </q-item>
+    <q-separator inset dark />
+    <q-item v-for="item in errorMessage.error" :key="item">
+      <q-item-section>
+        {{ item[0] }}
+      </q-item-section>
+    </q-item>
+  </q-list>
+</q-card-section>
+```
+
+## In pages/dashboard folder, Update AllUsersPage.vue File
+
+- ### Update import part in script
+
+```bash
+import {columns, rows, pagination, onRequest} from 'src/components/dashboard/ts/allUsersComponent';
+import AdminCreateUser from 'src/components/dashboard/vue/AdminCreateUser.vue';
+import AdminUpdateUser from 'src/components/dashboard/vue/AdminUpdateUser.vue';
+import AdminDeleteUser from 'src/components/dashboard/vue/AdminDeleteUser.vue';
+```
+
+- ### Update updateUserFunction in script
+
+```bash
+const updateUserFunction = (row: any) => {
+  updateUserParameter.value.id = row.id;
+  updateUserParameter.value.username = row.name;
+  updateUserParameter.value.email = row.email;
+  updateUserParameter.value.role = row.roles[0].name;
+  updateUserDialog.value = true;
+};
+```
+
+- ### Update q-table tag in template
+
+```bash
+<q-table
+  :grid="$q.screen.xs"
+  title="َAll Users"
+  :rows="rows"
+  :columns="columns"
+  row-key="name"
+  :filter="filter"
+  :rows-per-page-options="[0]"
+  v-model:pagination="pagination"
+  @request="onRequest"
+>
+```
+
+- ### Update admin-create-user component in template
+
+```bash
+<admin-create-user
+v-model:model-value="createUserDialog"
+:id="createUserParameter.id"
+:username="createUserParameter.username"
+:email="createUserParameter.email"
+:refresh="onRequest"
+></admin-create-user>
+```
+
+- ### Update admin-update-user component in template
+
+```bash
+<admin-update-user
+  v-model:model-value="updateUserDialog"
+  :id="updateUserParameter.id"
+  :username="updateUserParameter.username"
+  :email="updateUserParameter.email"
+  :role="updateUserParameter.role"
+  :refresh="onRequest"
+></admin-update-user>
+```
+
+- ### Update admin-delete-user component in template
+
+```bash
+<admin-delete-user
+  v-model:model-value="deleteUserDialog"
+  :id="deleteUserParameter.id"
+  :username="deleteUserParameter.username"
+  :email="deleteUserParameter.email"
+  :refresh="onRequest"
+></admin-delete-user>
 ```
