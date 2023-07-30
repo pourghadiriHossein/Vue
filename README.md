@@ -1,4 +1,4 @@
-# Develop Client Side, Create Register and Update Profile Mechanism
+# Develop Client Side, Create and Update and Delete User for Admin
 
 ## In models, Update user.ts File
 
