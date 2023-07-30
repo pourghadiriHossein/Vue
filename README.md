@@ -1,52 +1,23 @@
-# Develop Client Side, Create and Update and Delete for My Post
+# Develop Client Side, Update and Delete for All Post
 
 ## In models, Update Post.ts File
-- ### import part
+
+- ### Write all Posts list function for Admin
 ```bash
-import { api } from 'src/boot/axios';
-import { AxiosResponse } from 'axios';
-import { FetchResponse } from 'src/models/types';
-```
-- ### Write My Posts list function for User
-```bash
-static async myPosts(page: number) {
+static async allPostsForAdmin(page: number) {
   const response = await api.get<FetchResponse<Post>>(
-    `api/my-posts?page=${page}`
+    `api/all-posts-for-admin?page=${page}`
   );
   if (response.status == 200) {
     return response;
   }
-  throw Error('My Posts failed');
+  throw Error('All Posts failed');
 }
 ```
-- ### Write Create Post function For User
+
+- ### Write Update Post function For Admin
 ```bash
-static async createPost(
-  title: string,
-  description: string,
-  image: File,
-  latitude: number,
-  longitude: number
-) {
-  const data = new FormData();
-  data.append('title', title);
-  data.append('description', description);
-  data.append('image', image);
-  data.append('latitude', latitude);
-  data.append('longitude', longitude);
-  const response = await api.post<AxiosResponse>(
-    'api/create-post',
-    data
-  );
-  if (response.status == 200) {
-    return response;
-  }
-  throw Error('Created Failed');
-}
-```
-- ### Write Update Post function For User
-```bash
-static async updatePost(
+static async adminUpdatePost(
   id: number,
   title: string,
   description: string,
@@ -61,34 +32,35 @@ static async updatePost(
   data.append('latitude', latitude);
   data.append('longitude', longitude);
   const response = await api.post<AxiosResponse>(
-    `api/update-my-post/${id}`,
+    `api/update-post-by-admin/${id}`,
     data
   );
   if (response.status == 200) {
     return response;
   }
-  throw Error('Updated Failed');
+  throw Error('Update Failed');
 }
 ```
-- ### Write Delete Post function For User
+- ### Write Delete Post function For Admin
 ```bash
-static async deletePost(id: number) {
+static async adminDeletePost(id: number) {
   const response = await api.get<FetchResponse<Post>>(
-    `api/delete-my-post/${id}`
+    `api/delete-post-by-admin/${id}`
   );
   if (response.status == 200) {
     return response;
   }
-  throw Error('Deleted Failed');
+  throw Error('Delete Failed');
 }
 ```
-## In components/dashboard/ts Folder, Update myPostsComponent.ts File
+## In components/dashboard/ts Folder, Update allPostsComponent.ts File
 ```bash
-import { Post } from 'src/models/post';
+import { Post } from "src/models/post";
 import { ref } from "vue";
 
 const columns: any = [
   { name: 'id', align: 'left', label: 'ID', field: 'id', sortable: true },
+  { name: 'name', align: 'center', label: 'User Name', field: 'user', sortable: true,format: (val:string) => `${val.name}`, },
   { name: 'title', align: 'center', label: 'Title', field: 'title', sortable: true },
   { name: 'description', align: 'center', label: 'Description', field: 'description', sortable: true,format: (val:string) => `${val.slice(0,40)} ...`, },
 ]
@@ -104,7 +76,7 @@ const pagination = ref({
 })
 const onRequest = (data: any) => {
   if(!data){
-    Post.myPosts(1)
+    Post.allPostsForAdmin(1)
     .then(
       (response) => {
         rows.value = response.data.posts;
@@ -114,7 +86,7 @@ const onRequest = (data: any) => {
       )
     }
     else{
-    Post.myPosts(data.pagination.page)
+    Post.allPostsForAdmin(data.pagination.page)
     .then(
       (response) => {
         rows.value = response.data.posts;
@@ -128,86 +100,8 @@ onRequest(null);
 
 export {columns, rows, pagination, onRequest}
 ```
-## In components/dashboard/vue Folder, Update CreatePost.vue File
-- ### import part
-```bash
-import { Post } from 'src/models/post';
-```
-- ### add refresh prop to props
-```bash
-refresh: {}
-```
-- ### Write validation script
-```bash
-const hidden = ref(true);
-const dangerErrorState = 'bg-red q-pa-sm text-white';
-const successErrorState = 'bg-green q-pa-sm text-white';
-const errorMessage = ref({
-  error: [],
-  state: ''
-});
-const closeErrorPart = () => {
-  hidden.value = !hidden.value;
-}
-```
-- ### Update accepted function
-```bash
-Post.createPost(
-  createPostParameter.value.title,
-  createPostParameter.value.description,
-  createPostParameter.value.image,
-  createPostParameter.value.latitude,
-  createPostParameter.value.longitude,
-)
-  .then(
-    (response) => {
-      if (response.status == 200) {
-        if (response.data.errors) {
-          errorMessage.value.error = response.data.errors;
-          errorMessage.value.state = successErrorState;
-          hidden.value = false;
-          props.refresh();
-          setTimeout(() => {
-            emit.call(this, 'update:model-value', false);
-          }, 2000);
-        }
-      }
-    },
-    (reject) => {
-      if (reject.response.status != 200) {
-        if (reject.response.data.errors) {
-          errorMessage.value.error = reject.response.data.errors;
-          errorMessage.value.state = dangerErrorState;
-          hidden.value = false;
-        }
-      }
-    }
-  )
-```
-- ### write validation tags in template
-```bash
-<q-card-section class="q-pt-none">
-  <q-list :class="errorMessage.state" :hidden="hidden">
-    <q-item>
-      <q-btn
-        size="sm"
-        color="transparent"
-        dense
-        icon="close"
-        @click="closeErrorPart()"
-      ></q-btn>
-    </q-item>
-    <q-separator inset dark />
-    <q-item v-for="item in errorMessage.error" :key="item">
-      <q-item-section>
-        {{ item[0] }}
-      </q-item-section>
-    </q-item>
-  </q-list>
-</q-card-section>
-```
 
-## In components/dashboard/vue Folder, Update UpdatePost.vue File
+## In components/dashboard/vue Folder, Update AdminUpdatePost.vue File
 - ### import part
 ```bash
 import { Post } from 'src/models/post';
@@ -231,7 +125,7 @@ const closeErrorPart = () => {
 ```
 - ### Update accepted function
 ```bash
-Post.updatePost(
+Post.adminUpdatePost(
   props.id,
   updatePostParameter.value.title,
   updatePostParameter.value.description,
@@ -239,30 +133,30 @@ Post.updatePost(
   updatePostParameter.value.latitude,
   updatePostParameter.value.longitude,
 )
-  .then(
-    (response) => {
-      if (response.status == 200) {
-        if (response.data.errors) {
-          errorMessage.value.error = response.data.errors;
-          errorMessage.value.state = successErrorState;
-          hidden.value = false;
-          props.refresh();
-          setTimeout(() => {
-            emit.call(this, 'update:model-value', false);
-          }, 2000);
-        }
-      }
-    },
-    (reject) => {
-      if (reject.response.status != 200) {
-        if (reject.response.data.errors) {
-          errorMessage.value.error = reject.response.data.errors;
-          errorMessage.value.state = dangerErrorState;
-          hidden.value = false;
-        }
+.then(
+  (response) => {
+    if(response.status == 200){
+      if(response.data.errors) {
+        errorMessage.value.error = response.data.errors;
+        errorMessage.value.state = successErrorState;
+        hidden.value = false;
+        props.refresh();
+        setTimeout(() => {
+          emit.call(this, 'update:model-value', false);
+        }, 2000);
       }
     }
-  )
+  },
+  (reject) => {
+    if(reject.response.status != 200){
+      if(reject.response.data.errors) {
+        errorMessage.value.error = reject.response.data.errors;
+        errorMessage.value.state = dangerErrorState;
+        hidden.value = false;
+      }
+    }
+  }
+)
 ```
 - ### write validation tags in template
 ```bash
@@ -281,7 +175,7 @@ Post.updatePost(
 </q-card-section>
 ```
 
-## In components/dashboard/vue Folder, Update DeletePost.vue File
+## In components/dashboard/vue Folder, Update AdminDeletePost.vue File
 - ### import part
 ```bash
 import { Post } from 'src/models/post';
@@ -305,10 +199,11 @@ const closeErrorPart = () => {
 ```
 - ### Update accepted function
 ```bash
-Post.deletePost(props.id).then(
+Post.adminDeletePost(props.id)
+.then(
   (response) => {
-    if (response.status == 200) {
-      if (response.data.errors) {
+    if(response.status == 200){
+      if(response.data.errors) {
         errorMessage.value.error = response.data.errors;
         errorMessage.value.state = successErrorState;
         hidden.value = false;
@@ -320,15 +215,15 @@ Post.deletePost(props.id).then(
     }
   },
   (reject) => {
-    if (reject.response.status != 200) {
-      if (reject.response.data.errors) {
+    if(reject.response.status != 200){
+      if(reject.response.data.errors) {
         errorMessage.value.error = reject.response.data.errors;
         errorMessage.value.state = dangerErrorState;
         hidden.value = false;
       }
     }
   }
-);
+)
 ```
 - ### write validation tags in template
 ```bash
@@ -352,7 +247,8 @@ Post.deletePost(props.id).then(
   </q-list>
 </q-card-section>
 ```
-## In pages/dashboard folder, Update MyPostsPage.vue File
+## In pages/dashboard folder, Update AllPostsPage.vue File
+
 - ### In Script, Update import part
 ```bash
   import {columns, rows , pagination, onRequest} from 'src/components/dashboard/ts/myPostsComponent';
@@ -363,12 +259,9 @@ Post.deletePost(props.id).then(
 ```
 - ### In template, Update q-table
 ```bash
+title="All Posts"
 v-model:pagination="pagination"
 @request="onRequest"
-```
-- ### In template, add refresh prop to create post component tag
-```bash
-:refresh="onRequest"
 ```
 - ### In template, add refresh prop to update post component tag
 ```bash

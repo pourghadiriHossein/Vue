@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { defineProps, defineEmits, ref } from 'vue';
   import MapView from 'src/components/map/mapView.vue';
+  import { Post } from 'src/models/post';
 
   const props = defineProps({
     modelValue: {
@@ -27,6 +28,7 @@
     longitude: {
       default: 49.6
     },
+    refresh: {}
   });
 
   const tab = ref('image');
@@ -38,19 +40,73 @@
 
   }
 
+  const hidden = ref(true);
+  const dangerErrorState = 'bg-red q-pa-sm text-white';
+  const successErrorState = 'bg-green q-pa-sm text-white';
+  const errorMessage = ref({
+    error:  [],
+    state: ''
+  });
+  const closeErrorPart = () => {
+    hidden.value = !hidden.value;
+  }
+
   const emit = defineEmits(['update:model-value']);
 
   const close = () => {
     emit.call(this, 'update:model-value', false);
   };
   const accepted = () => {
-    emit.call(this, 'update:model-value', false);
+    Post.adminDeletePost(props.id)
+    .then(
+      (response) => {
+        if(response.status == 200){
+          if(response.data.errors) {
+            errorMessage.value.error = response.data.errors;
+            errorMessage.value.state = successErrorState;
+            hidden.value = false;
+            props.refresh();
+            setTimeout(() => {
+              emit.call(this, 'update:model-value', false);
+            }, 2000);
+          }
+        }
+      },
+      (reject) => {
+        if(reject.response.status != 200){
+          if(reject.response.data.errors) {
+            errorMessage.value.error = reject.response.data.errors;
+            errorMessage.value.state = dangerErrorState;
+            hidden.value = false;
+          }
+        }
+      }
+    )
   };
 </script>
 
 <template>
   <q-dialog :model-value="modelValue" persistent>
     <q-card class="my-card" style="min-width: 350px;">
+      <q-card-section>
+        <q-list :class="errorMessage.state" :hidden="hidden">
+          <q-item>
+            <q-btn
+              size="sm"
+              color="transparent"
+              dense
+              icon="close"
+              @click="closeErrorPart()"
+            ></q-btn>
+          </q-item>
+          <q-separator inset dark />
+          <q-item v-for="item in errorMessage.error" :key="item">
+            <q-item-section>
+              {{ item[0] }}
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-card-section>
       <q-tab-panels v-model="tab" animated class="full-width">
         <q-tab-panel name="image">
           <q-img :src="img" :fit="'cover'"/>

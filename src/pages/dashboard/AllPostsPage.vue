@@ -2,12 +2,14 @@
   <div class="q-pa-md">
     <q-table
       :grid="$q.screen.xs"
-      title="My Posts"
+      title="All Posts"
       :rows="rows"
       :columns="columns"
       row-key="name"
       :filter="filter"
       :rows-per-page-options="[0]"
+      v-model:pagination="pagination"
+      @request="onRequest"
     >
       <template v-slot:top-right>
         <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
@@ -54,6 +56,7 @@
   :description="updatePostParameter.description"
   :latitude="updatePostParameter.latitude"
   :longitude="updatePostParameter.longitude"
+  :refresh="onRequest"
   ></admin-update-post>
   <admin-delete-post
   v-model:model-value="deletePostDialog"
@@ -64,12 +67,13 @@
   :description="deletePostParameter.description"
   :latitude="deletePostParameter.latitude"
   :longitude="deletePostParameter.longitude"
+  :refresh="onRequest"
   ></admin-delete-post>
 </template>
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import {columns, rows} from 'src/components/dashboard/ts/allPostsComponent';
+  import {columns, rows , pagination, onRequest} from 'src/components/dashboard/ts/allPostsComponent';
   import AdminUpdatePost from 'src/components/dashboard/vue/AdminUpdatePost.vue';
   import AdminDeletePost from 'src/components/dashboard/vue/AdminDeletePost.vue';
 
@@ -102,7 +106,7 @@
   const deletePostDialog = ref(false);
   const deletePostFunction = (row: any) => {
     deletePostParameter.value.id = row.id;
-    deletePostParameter.value.img = row.img;
+    deletePostParameter.value.img = `http://127.0.0.1:8000/${row.media[0].url}`;
     deletePostParameter.value.title = row.title;
     deletePostParameter.value.username = row.username;
     deletePostParameter.value.description = row.description;

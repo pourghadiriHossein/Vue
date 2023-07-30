@@ -53,10 +53,7 @@ export class Post {
     data.append('image', image);
     data.append('latitude', latitude);
     data.append('longitude', longitude);
-    const response = await api.post<AxiosResponse>(
-      'api/create-post',
-      data
-    );
+    const response = await api.post<AxiosResponse>('api/create-post', data);
     if (response.status == 200) {
       return response;
     }
@@ -95,5 +92,49 @@ export class Post {
       return response;
     }
     throw Error('Deleted Failed');
+  }
+
+  static async allPostsForAdmin(page: number) {
+    const response = await api.get<FetchResponse<Post>>(
+      `api/all-posts-for-admin?page=${page}`
+    );
+    if (response.status == 200) {
+      return response;
+    }
+    throw Error('All Posts failed');
+  }
+
+  static async adminUpdatePost(
+    id: number,
+    title: string,
+    description: string,
+    image: File,
+    latitude: number,
+    longitude: number
+  ) {
+    const data = new FormData();
+    data.append('title', title);
+    data.append('description', description);
+    data.append('image', image);
+    data.append('latitude', latitude);
+    data.append('longitude', longitude);
+    const response = await api.post<AxiosResponse>(
+      `api/update-post-by-admin/${id}`,
+      data
+    );
+    if (response.status == 200) {
+      return response;
+    }
+    throw Error('Update Failed');
+  }
+
+  static async adminDeletePost(id: number) {
+    const response = await api.get<FetchResponse<Post>>(
+      `api/delete-post-by-admin/${id}`
+    );
+    if (response.status == 200) {
+      return response;
+    }
+    throw Error('Delete Failed');
   }
 }
