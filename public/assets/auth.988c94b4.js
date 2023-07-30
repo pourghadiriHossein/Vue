@@ -1,0 +1,1 @@
+import{b as e,u as a}from"./index.fc4d1fc7.js";var t=e(async({urlPath:i,redirect:s})=>{const o=a();if(o.import(),i.includes("dashboard")&&!i.includes("login")){if(!o.isAuthorized){s({name:"login"});return}}else if(i.includes("login")&&o.isAuthorized){s({name:"dashboard"});return}});export{t as default};
