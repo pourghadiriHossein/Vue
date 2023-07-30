@@ -29,7 +29,7 @@
       </q-card-section>
       <q-separator />
       <q-card-actions>
-        <q-btn color="light-blue-8" icon-right="favorite" :label="`Like (${post.upVoteCount})`" />
+        <q-btn color="light-blue-8" icon-right="favorite" :label="`Like (${post.upVoteCount})`" @click="like(post.id)"/>
       </q-card-actions>
     </q-card>
     <q-dialog
@@ -50,15 +50,17 @@
         <map-view class="full-width full-height"
         :latitude="mapVariable.lat"
         :longitude="mapVariable.long"
+        :state="'view'"
         ></map-view>
       </q-card>
     </q-dialog>
   </div>
 </template>
 <script lang="ts" setup>
-import {posts} from 'src/components/dashboard/ts/dashboardComponent'
+import {posts , refresh} from 'src/components/dashboard/ts/dashboardComponent'
 import MapView from 'src/components/map/mapView.vue';
 import { ref } from 'vue';
+import { Post } from 'src/models/post';
 
 const mapVariable = ref({
   lat : <number> 0,
@@ -72,6 +74,17 @@ const fullMap = (lat: number, long:number) => {
   fullMapView.value = true;
 }
 const maximizedToggle = ref(true);
+
+const like = (id: number) => {
+  Post.likePost(id)
+  .then(
+    (response)=>{
+      if (response.status == 200) {
+        refresh();
+      }
+    }
+  )
+}
 </script>
 
 

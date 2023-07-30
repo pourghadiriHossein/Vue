@@ -1,273 +1,85 @@
-# Develop Client Side, Update and Delete for All Post
+# Develop Client Side, Complete dashboard Part
 
-## In models, Update Post.ts File
-
-- ### Write all Posts list function for Admin
+## In models, Update post.ts File
+- ### Write all Posts in dashboard function for Dashboard index
 ```bash
-static async allPostsForAdmin(page: number) {
+static async allPostInDashboard() {
   const response = await api.get<FetchResponse<Post>>(
-    `api/all-posts-for-admin?page=${page}`
+    'api/all-posts-for-dashboard'
   );
   if (response.status == 200) {
     return response;
   }
-  throw Error('All Posts failed');
+  throw Error('Deleted Failed');
 }
 ```
-
-- ### Write Update Post function For Admin
+- ### Write like post function for Dashboard index
 ```bash
-static async adminUpdatePost(
-  id: number,
-  title: string,
-  description: string,
-  image: File,
-  latitude: number,
-  longitude: number
-) {
-  const data = new FormData();
-  data.append('title', title);
-  data.append('description', description);
-  data.append('image', image);
-  data.append('latitude', latitude);
-  data.append('longitude', longitude);
-  const response = await api.post<AxiosResponse>(
-    `api/update-post-by-admin/${id}`,
-    data
-  );
+static async likePost(id: number) {
+  const response = await api.get<FetchResponse<Post>>(`api/posts/${id}/like`);
   if (response.status == 200) {
     return response;
   }
-  throw Error('Update Failed');
+  throw Error('Deleted Failed');
 }
 ```
-- ### Write Delete Post function For Admin
-```bash
-static async adminDeletePost(id: number) {
-  const response = await api.get<FetchResponse<Post>>(
-    `api/delete-post-by-admin/${id}`
-  );
-  if (response.status == 200) {
-    return response;
-  }
-  throw Error('Delete Failed');
-}
-```
-## In components/dashboard/ts Folder, Update allPostsComponent.ts File
-```bash
-import { Post } from "src/models/post";
-import { ref } from "vue";
-
-const columns: any = [
-  { name: 'id', align: 'left', label: 'ID', field: 'id', sortable: true },
-  { name: 'name', align: 'center', label: 'User Name', field: 'user', sortable: true,format: (val:string) => `${val.name}`, },
-  { name: 'title', align: 'center', label: 'Title', field: 'title', sortable: true },
-  { name: 'description', align: 'center', label: 'Description', field: 'description', sortable: true,format: (val:string) => `${val.slice(0,40)} ...`, },
-]
-
-const rows = ref();
-
-const pagination = ref({
-  sortBy: 'desc',
-  descending: false,
-  page: 1,
-  rowsPerPage: 5,
-  rowsNumber: 100
-})
-const onRequest = (data: any) => {
-  if(!data){
-    Post.allPostsForAdmin(1)
-    .then(
-      (response) => {
-        rows.value = response.data.posts;
-        pagination.value.page = response.data.meta?.pagination?.posts.current_page ?? 1;
-        pagination.value.rowsNumber = response.data.meta?.pagination?.posts.total ?? 1;
-      }
-      )
-    }
-    else{
-    Post.allPostsForAdmin(data.pagination.page)
-    .then(
-      (response) => {
-        rows.value = response.data.posts;
-        pagination.value.page = response.data.meta?.pagination?.posts.current_page ?? 1;
-        pagination.value.rowsNumber = response.data.meta?.pagination?.posts.total ?? 1;
-      }
-    )
-  }
-}
-onRequest(null);
-
-export {columns, rows, pagination, onRequest}
-```
-
-## In components/dashboard/vue Folder, Update AdminUpdatePost.vue File
-- ### import part
+## In components/dashboard/ts folder, Update dashboardComponent.ts File
 ```bash
 import { Post } from 'src/models/post';
-```
-- ### add refresh prop to props
-```bash
-refresh: {}
-```
-- ### Write validation script
-```bash
-const hidden = ref(true);
-const dangerErrorState = 'bg-red q-pa-sm text-white';
-const successErrorState = 'bg-green q-pa-sm text-white';
-const errorMessage = ref({
-  error: [],
-  state: ''
-});
-const closeErrorPart = () => {
-  hidden.value = !hidden.value;
-}
-```
-- ### Update accepted function
-```bash
-Post.adminUpdatePost(
-  props.id,
-  updatePostParameter.value.title,
-  updatePostParameter.value.description,
-  updatePostParameter.value.image,
-  updatePostParameter.value.latitude,
-  updatePostParameter.value.longitude,
-)
-.then(
-  (response) => {
-    if(response.status == 200){
-      if(response.data.errors) {
-        errorMessage.value.error = response.data.errors;
-        errorMessage.value.state = successErrorState;
-        hidden.value = false;
-        props.refresh();
-        setTimeout(() => {
-          emit.call(this, 'update:model-value', false);
-        }, 2000);
-      }
-    }
-  },
-  (reject) => {
-    if(reject.response.status != 200){
-      if(reject.response.data.errors) {
-        errorMessage.value.error = reject.response.data.errors;
-        errorMessage.value.state = dangerErrorState;
-        hidden.value = false;
-      }
-    }
+import { ref } from 'vue';
+const serverRoute = 'http://127.0.0.1:8000/';
+const posts: any = ref([]);
+
+const refresh = () => {
+  if (posts.value != null) {
+    posts.value = [];
   }
-)
-```
-- ### write validation tags in template
-```bash
-<q-card-section class="q-pt-none">
-  <q-list :class="errorMessage.state" :hidden="hidden">
-    <q-item>
-      <q-btn size="sm" color="transparent" dense icon="close" @click="closeErrorPart()"></q-btn>
-    </q-item>
-    <q-separator inset dark />
-    <q-item v-for="item in errorMessage.error" :key="item">
-      <q-item-section>
-        {{ item[0] }}
-      </q-item-section>
-    </q-item>
-  </q-list>
-</q-card-section>
+  Post.allPostInDashboard().then((response) => {
+    response.data.forEach((post) => {
+      posts.value.push({
+        id: post.id,
+        img: serverRoute + post.media[0].url,
+        latitude: post.latitude,
+        longitude: post.longitude,
+        title: post.title,
+        username: post.user.name,
+        description: post.description,
+        upVoteCount: post.up_vote_count,
+      });
+    });
+  });
+};
+refresh();
+export { posts, refresh };
 ```
 
-## In components/dashboard/vue Folder, Update AdminDeletePost.vue File
-- ### import part
+## In pages/dashboard, Update DashboardPage.vue File
+- ### In script, Update import part
 ```bash
+import {posts , refresh} from 'src/components/dashboard/ts/dashboardComponent'
 import { Post } from 'src/models/post';
 ```
-- ### add refresh prop to props
+- ### In script, Write like function
 ```bash
-refresh: {}
-```
-- ### Write validation script
-```bash
-const hidden = ref(true);
-const dangerErrorState = 'bg-red q-pa-sm text-white';
-const successErrorState = 'bg-green q-pa-sm text-white';
-const errorMessage = ref({
-  error: [],
-  state: ''
-});
-const closeErrorPart = () => {
-  hidden.value = !hidden.value;
+const like = (id: number) => {
+  Post.likePost(id)
+  .then(
+    (response)=>{
+      if (response.status == 200) {
+        refresh();
+      }
+    }
+  )
 }
 ```
-- ### Update accepted function
+- ### In template, Update like q-btn
 ```bash
-Post.adminDeletePost(props.id)
-.then(
-  (response) => {
-    if(response.status == 200){
-      if(response.data.errors) {
-        errorMessage.value.error = response.data.errors;
-        errorMessage.value.state = successErrorState;
-        hidden.value = false;
-        props.refresh();
-        setTimeout(() => {
-          emit.call(this, 'update:model-value', false);
-        }, 2000);
-      }
-    }
-  },
-  (reject) => {
-    if(reject.response.status != 200){
-      if(reject.response.data.errors) {
-        errorMessage.value.error = reject.response.data.errors;
-        errorMessage.value.state = dangerErrorState;
-        hidden.value = false;
-      }
-    }
-  }
-)
+<q-btn color="light-blue-8" icon-right="favorite" :label="`Like (${post.upVoteCount})`" @click="like(post.id)"/>
 ```
-- ### write validation tags in template
+- ### In template, add state prob map view component tag
 ```bash
-<q-card-section>
-  <q-list :class="errorMessage.state" :hidden="hidden">
-    <q-item>
-      <q-btn
-        size="sm"
-        color="transparent"
-        dense
-        icon="close"
-        @click="closeErrorPart()"
-      ></q-btn>
-    </q-item>
-    <q-separator inset dark />
-    <q-item v-for="item in errorMessage.error" :key="item">
-      <q-item-section>
-        {{ item[0] }}
-      </q-item-section>
-    </q-item>
-  </q-list>
-</q-card-section>
+:state="'view'"
 ```
-## In pages/dashboard folder, Update AllPostsPage.vue File
 
-- ### In Script, Update import part
-```bash
-  import {columns, rows , pagination, onRequest} from 'src/components/dashboard/ts/myPostsComponent';
-```
-- ### In Script, Update deletePostFunction
-```bash
-    deletePostParameter.value.img = `http://127.0.0.1:8000/${row.media[0].url}`;
-```
-- ### In template, Update q-table
-```bash
-title="All Posts"
-v-model:pagination="pagination"
-@request="onRequest"
-```
-- ### In template, add refresh prop to update post component tag
-```bash
-:refresh="onRequest"
-```
-- ### In template, add refresh prop to delete post component tag
-```bash
-:refresh="onRequest"
-```
+
+

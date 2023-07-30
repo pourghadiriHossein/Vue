@@ -137,4 +137,22 @@ export class Post {
     }
     throw Error('Delete Failed');
   }
+
+  static async allPostInDashboard() {
+    const response = await api.get<FetchResponse<Post>>(
+      'api/all-posts-for-dashboard'
+    );
+    if (response.status == 200) {
+      return response;
+    }
+    throw Error('Deleted Failed');
+  }
+
+  static async likePost(id: number) {
+    const response = await api.get<FetchResponse<Post>>(`api/posts/${id}/like`);
+    if (response.status == 200) {
+      return response;
+    }
+    throw Error('Deleted Failed');
+  }
 }
