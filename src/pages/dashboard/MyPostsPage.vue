@@ -8,6 +8,8 @@
       row-key="name"
       :filter="filter"
       :rows-per-page-options="[0]"
+      v-model:pagination="pagination"
+      @request="onRequest"
     >
       <template v-slot:top-right>
         <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
@@ -21,6 +23,7 @@
         :img="createPostParameter.img"
         :title="createPostParameter.title"
         :description="createPostParameter.description"
+        :refresh="onRequest"
         ></create-post>
       </template>
       <template v-slot:header="props">
@@ -61,6 +64,7 @@
   :description="updatePostParameter.description"
   :latitude="updatePostParameter.latitude"
   :longitude="updatePostParameter.longitude"
+  :refresh="onRequest"
   ></update-post>
   <delete-post
   v-model:model-value="deletePostDialog"
@@ -71,12 +75,13 @@
   :description="deletePostParameter.description"
   :latitude="deletePostParameter.latitude"
   :longitude="deletePostParameter.longitude"
+  :refresh="onRequest"
   ></delete-post>
 </template>
 
 <script lang="ts" setup>
   import { ref } from 'vue'
-  import {columns, rows} from 'src/components/dashboard/ts/myPostsComponent';
+  import {columns, rows , pagination, onRequest} from 'src/components/dashboard/ts/myPostsComponent';
   import CreatePost from 'src/components/dashboard/vue/CreatePost.vue'
   import UpdatePost from 'src/components/dashboard/vue/UpdatePost.vue';
   import DeletePost from 'src/components/dashboard/vue/DeletePost.vue';
@@ -122,7 +127,7 @@
   const deletePostDialog = ref(false);
   const deletePostFunction = (row: any) => {
     deletePostParameter.value.id = row.id;
-    deletePostParameter.value.img = row.img;
+    deletePostParameter.value.img = `http://127.0.0.1:8000/${row.media[0].url}`;
     deletePostParameter.value.title = row.title;
     deletePostParameter.value.username = row.username;
     deletePostParameter.value.description = row.description;
