@@ -17,9 +17,23 @@
 
     <q-drawer show-if-above v-model="leftDrawerOpen" side="left" elevated>
       <!-- drawer content -->
-      <q-list separator>
+      <q-list separator v-if="profile.role == 'admin'">
         <q-item
           v-for="(item, index) in accessMenu"
+          :key="index"
+          :to="{ name: item.route }"
+          v-ripple
+          clickable
+        >
+          <q-avatar><q-icon :name="item.icon"></q-icon></q-avatar>
+          <q-item-section>
+            <q-item-label class="q-ml-sm"> {{ item.name }} </q-item-label>
+          </q-item-section>
+        </q-item>
+      </q-list>
+      <q-list separator v-else>
+        <q-item
+          v-for="(item, index) in accessMenu.slice(0,2)"
           :key="index"
           :to="{ name: item.route }"
           v-ripple

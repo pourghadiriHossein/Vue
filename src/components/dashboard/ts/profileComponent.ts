@@ -13,6 +13,7 @@ const userData =  () => {
       if(value.data.user.media[0]?.url){
         profile.value.avatar = serverRoute + value.data.user.media[0]?.url;
       }
+      profile.value.role = value.data.user.roles[0].name
     }
   )
 }
@@ -25,4 +26,5 @@ export const profile = ref({
   avatar: 'src/image/avatar.png',
   newAvatar: undefined,
   password: '',
+  role: '',
 })

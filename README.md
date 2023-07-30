@@ -1,85 +1,69 @@
-# Develop Client Side, Complete dashboard Part
+# Develop Client Side, Active Security for Dashboard Layout
 
-## In models, Update post.ts File
-- ### Write all Posts in dashboard function for Dashboard index
+## In components/dashboard/ts, Update profileComponent.ts File
 ```bash
-static async allPostInDashboard() {
-  const response = await api.get<FetchResponse<Post>>(
-    'api/all-posts-for-dashboard'
-  );
-  if (response.status == 200) {
-    return response;
-  }
-  throw Error('Deleted Failed');
-}
-```
-- ### Write like post function for Dashboard index
-```bash
-static async likePost(id: number) {
-  const response = await api.get<FetchResponse<Post>>(`api/posts/${id}/like`);
-  if (response.status == 200) {
-    return response;
-  }
-  throw Error('Deleted Failed');
-}
-```
-## In components/dashboard/ts folder, Update dashboardComponent.ts File
-```bash
-import { Post } from 'src/models/post';
 import { ref } from 'vue';
+import { User } from 'src/models/user'
+
 const serverRoute = 'http://127.0.0.1:8000/';
-const posts: any = ref([]);
 
-const refresh = () => {
-  if (posts.value != null) {
-    posts.value = [];
-  }
-  Post.allPostInDashboard().then((response) => {
-    response.data.forEach((post) => {
-      posts.value.push({
-        id: post.id,
-        img: serverRoute + post.media[0].url,
-        latitude: post.latitude,
-        longitude: post.longitude,
-        title: post.title,
-        username: post.user.name,
-        description: post.description,
-        upVoteCount: post.up_vote_count,
-      });
-    });
-  });
-};
-refresh();
-export { posts, refresh };
-```
-
-## In pages/dashboard, Update DashboardPage.vue File
-- ### In script, Update import part
-```bash
-import {posts , refresh} from 'src/components/dashboard/ts/dashboardComponent'
-import { Post } from 'src/models/post';
-```
-- ### In script, Write like function
-```bash
-const like = (id: number) => {
-  Post.likePost(id)
+const userData =  () => {
+  User.profile()
   .then(
-    (response)=>{
-      if (response.status == 200) {
-        refresh();
+    (value) => {
+      profile.value.id = value.data.user.id;
+      profile.value.username = value.data.user.name;
+      profile.value.email = value.data.user.email;
+      if(value.data.user.media[0]?.url){
+        profile.value.avatar = serverRoute + value.data.user.media[0]?.url;
       }
+      profile.value.role = value.data.user.roles[0].name
     }
   )
 }
-```
-- ### In template, Update like q-btn
-```bash
-<q-btn color="light-blue-8" icon-right="favorite" :label="`Like (${post.upVoteCount})`" @click="like(post.id)"/>
-```
-- ### In template, add state prob map view component tag
-```bash
-:state="'view'"
+userData();
+
+export const profile = ref({
+  id: 0,
+  username: '',
+  email: '',
+  avatar: 'src/image/avatar.png',
+  newAvatar: undefined,
+  password: '',
+  role: '',
+})
 ```
 
-
+## In Layouts/dashboard, Update DashboardLayout.vue File
+- ### in template, Update q-list tag in left drawer
+```bash
+<q-list separator v-if="profile.role == 'admin'">
+  <q-item
+    v-for="(item, index) in accessMenu"
+    :key="index"
+    :to="{ name: item.route }"
+    v-ripple
+    clickable
+  >
+    <q-avatar><q-icon :name="item.icon"></q-icon></q-avatar>
+    <q-item-section>
+      <q-item-label class="q-ml-sm"> {{ item.name }} </q-item-label>
+    </q-item-section>
+  </q-item>
+</q-list>
+<q-list separator v-else>
+  <q-item
+    v-for="(item, index) in accessMenu.slice(0,2)"
+    :key="index"
+    :to="{ name: item.route }"
+    v-ripple
+    clickable
+  >
+    <q-avatar><q-icon :name="item.icon"></q-icon></q-avatar>
+    <q-item-section>
+      <q-item-label class="q-ml-sm"> {{ item.name }} </q-item-label>
+    </q-item-section>
+  </q-item>
+</q-list>
+```
 
