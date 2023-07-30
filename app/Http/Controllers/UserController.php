@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 
@@ -156,6 +157,8 @@ class UserController extends Controller
                 'email' => $data['email'],
             ]);
         }
+        DB::table('model_has_roles')->where('model_id',$user->id)->delete();
+
         if  ($request->input('role') === 'admin'){
             $user->assignRole(Role::findByName(Roles::ADMIN, 'api'));
         }
